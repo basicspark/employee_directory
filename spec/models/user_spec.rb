@@ -28,6 +28,33 @@ describe User do
 
   describe "field validations" do
 
+    shared_examples_for "a valid date field" do
+      describe "when date is invalid" do
+        it "should be invalid" do
+          invalid_dates = ["3", "331", "3/31S/2013", "3/0/2012", "3/1/20234",
+                           "3/1/1", "1/32/2013", "2/30/2013", "3/32/2013",
+                           "4/31/2013", "5/32/2013", "6/31/2013", "7/32/2013",
+                           "8/32/2013", "9/31/2013", "10/32/2013", "11/31/2013",
+                           "12/32/2013", "0/15/2013", "-1/15/2013", "13/15/2013",
+                           "12 31/2013", "3/2013", "2/29/2003"]
+          invalid_dates.each do |invalid_date|
+            subject.__send__("#{field}=", invalid_date)
+            expect(subject).not_to be_valid
+          end
+        end
+      end
+
+      describe "when date is valid" do
+        it "should be valid" do
+          valid_dates = %w[1/31/2013 2/29/2004 2/29/2000]
+          valid_dates.each do |valid_date|
+            subject.__send__("#{field}=", valid_date)
+            expect(subject).to be_valid
+          end
+        end
+      end
+    end
+
     describe "when first_name is missing" do
       before { @user.first_name = ' ' }
       it { should_not be_valid }
@@ -60,9 +87,9 @@ describe User do
 
     describe "when phone format is invalid" do
       it "should be invalid" do
-        bad_numbers = ["123", "123 444 1212", "(122) 223-2332", "232-2323232",
-                       "(122) 444 1212", "232-233-293S", "232-232-232",
-                       "2223331212", "22212312344"]
+        bad_numbers = ["123", "123 444 1212", "312 454 5765", "(122) 223-2332",
+                       "232-2323232","(122) 444 1212", "232-233-293S", "232-232-232",
+                       "2223331212", "22212312344", "112-654-5557"]
         bad_numbers.each do |number|
           @user.phone = number
           expect(@user).not_to be_valid
@@ -101,6 +128,16 @@ describe User do
       end
     end
 
+    describe "when email is already taken" do
+      before do
+        user_with_same_email = @user.dup
+        user_with_same_email.email = @user.email.upcase
+        user_with_same_email.save
+      end
+
+      it { should_not be_valid }
+    end
+
     describe "when address is too long" do
       before { @user.address = 'X' * 201 }
       it { should_not be_valid }
@@ -112,11 +149,13 @@ describe User do
     end
 
     describe "when start_date is invalid" do
-      it "should be invalid" do
-        invalid_dates = ["3", "331", "3/31S/2013", "3/0/2012", "3/1/20234",
-                         "3/1/1", "1/32/2013", "2/30/2013", "3/32/2013",
-                         "4/31/2013", "5/32/2013", "6/31/2013", ]
-      end
+      let(:field) { :start_date }
+      it_should_behave_like "a valid date field"
+    end
+
+    describe "when birthday is invalid" do
+      let(:field) { :birthday }
+      it_should_behave_like "a valid date field"
     end
 
     describe "when user_type is missing" do
@@ -144,7 +183,5 @@ describe User do
       end
     end
   end
-
-
-
 end
+
