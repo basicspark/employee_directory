@@ -12,16 +12,139 @@ describe User do
 
   subject { @user }
 
-  it { should respond_to(:first_name) }
-  it { should respond_to(:last_name) }
-  it { should respond_to(:department_id) }
-  it { should respond_to(:phone) }
-  it { should respond_to(:email) }
-  it { should respond_to(:address) }
-  it { should respond_to(:start_date) }
-  it { should respond_to(:birthday) }
-  it { should respond_to(:user_type) }
+  describe "response to methods" do
+    it { should respond_to(:first_name) }
+    it { should respond_to(:last_name) }
+    it { should respond_to(:department_id) }
+    it { should respond_to(:phone) }
+    it { should respond_to(:email) }
+    it { should respond_to(:address) }
+    it { should respond_to(:start_date) }
+    it { should respond_to(:birthday) }
+    it { should respond_to(:user_type) }
 
-  it { should be_valid }
+    it { should be_valid }
+  end
+
+  describe "field validations" do
+
+    describe "when first_name is missing" do
+      before { @user.first_name = ' ' }
+      it { should_not be_valid }
+    end
+
+    describe "when first_name is too long" do
+      before { @user.first_name = 'X' * 51 }
+      it { should_not be_valid }
+    end
+
+    describe "when last_name is missing" do
+      before { @user.last_name = ' ' }
+      it { should_not be_valid }
+    end
+
+    describe "when last_name is too long" do
+      before { @user.last_name = 'X' * 51 }
+      it { should_not be_valid }
+    end
+
+    describe "when department_id is missing" do
+      before { @user.department_id = nil }
+      it { should_not be_valid }
+    end
+
+    describe "when phone is missing" do
+      before { @user.phone = ' ' }
+      it { should_not be_valid }
+    end
+
+    describe "when phone format is invalid" do
+      it "should be invalid" do
+        bad_numbers = ["123", "123 444 1212", "(122) 223-2332", "232-2323232",
+                       "(122) 444 1212", "232-233-293S", "232-232-232",
+                       "2223331212", "22212312344"]
+        bad_numbers.each do |number|
+          @user.phone = number
+          expect(@user).not_to be_valid
+        end
+      end
+    end
+
+    describe "when phone format is valid" do
+      before { @user.phone = '312-555-1212' }
+      it { should be_valid }
+    end
+
+    describe "when email is missing" do
+      before { @user.email = ' ' }
+      it { should_not be_valid }
+    end
+
+    describe "when email format is invalid" do
+      it "should be invalid" do
+        addresses = %w[user@foo,com user_at_foo.org example.user@foo.foo@bar_baz.com
+                    foo@bar+baz.com foo@bar..com]
+        addresses.each do |invalid_address|
+          @user.email = invalid_address
+          expect(@user).not_to be_valid
+        end
+      end
+    end
+
+    describe "when email format is valid" do
+      it "should be valid" do
+        addresses = %w[user@foo.COM A-US-ER@f.b.org frst.lst@foo.jp a+b@baz.cn]
+        addresses.each do |valid_address|
+          @user.email = valid_address
+          expect(@user).to be_valid
+        end
+      end
+    end
+
+    describe "when address is too long" do
+      before { @user.address = 'X' * 201 }
+      it { should_not be_valid }
+    end
+
+    describe "when start_date is missing" do
+      before { @user.start_date = ' ' }
+      it { should_not be_valid }
+    end
+
+    describe "when start_date is invalid" do
+      it "should be invalid" do
+        invalid_dates = ["3", "331", "3/31S/2013", "3/0/2012", "3/1/20234",
+                         "3/1/1", "1/32/2013", "2/30/2013", "3/32/2013",
+                         "4/31/2013", "5/32/2013", "6/31/2013", ]
+      end
+    end
+
+    describe "when user_type is missing" do
+      before { @user.user_type = nil }
+      it { should_not be_valid }
+    end
+
+    describe "when user_type is invalid" do
+      it "should be invalid" do
+        invalid_types = [-1, 3]
+        invalid_types.each do |invalid_type|
+          @user.user_type = invalid_type
+          expect(@user).not_to be_valid
+        end
+      end
+    end
+
+    describe "when user_type is valid" do
+      it "should be valid" do
+        valid_types = (0..2).to_a
+        valid_types.each do |valid_type|
+          @user.user_type = valid_type
+          expect(@user).to be_valid
+        end
+      end
+    end
+  end
+
+
 
 end
