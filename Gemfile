@@ -14,6 +14,8 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'bcrypt', '~> 3.1.7'
 gem 'figaro', '~> 0.7.0'
+gem 'chronic', '~> 0.10.2'
+gem 'date_validator', '~> 0.7.0'
 
 group :development do
   gem 'spring'

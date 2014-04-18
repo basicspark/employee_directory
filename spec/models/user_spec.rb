@@ -6,7 +6,8 @@ describe User do
     @user = User.new(first_name: 'John', last_name: 'Doe', department_id: 1,
                      phone: '312-555-1212', email: 'john@example.com',
                      address: "123 Somewhere St.\nLittletown, IL 60606",
-                     start_date: '3/1/2004', birthday: '8/1', user_type: 0)
+                     start_date: Chronic::parse('3/1/2004'),
+                     birthday: Chronic::parse('8/1'), user_type: 0)
 
   end
 
@@ -31,15 +32,18 @@ describe User do
     shared_examples_for "a valid date field" do
       describe "when date is invalid" do
         it "should be invalid" do
-          invalid_dates = ["3", "331", "3/31S/2013", "3/0/2012", "3/1/20234",
-                           "3/1/1", "1/32/2013", "2/30/2013", "3/32/2013",
-                           "4/31/2013", "5/32/2013", "6/31/2013", "7/32/2013",
-                           "8/32/2013", "9/31/2013", "10/32/2013", "11/31/2013",
-                           "12/32/2013", "0/15/2013", "-1/15/2013", "13/15/2013",
-                           "12 31/2013", "3/2013", "2/29/2003"]
+          invalid_dates = ["3/31S/2013", "3/0/2012", "3/1/20234", "1/32/2013",
+                           "2/30/2013", "3/32/2013", "4/31/2013", "5/32/2013",
+                           "6/31/2013", "7/32/2013", "8/32/2013", "9/31/2013",
+                           "10/32/2013", "11/31/2013","12/32/2013", "0/15/2013",
+                           "-1/15/2013", "13/15/2013", "12 31/2013", "2/29/2003"]
           invalid_dates.each do |invalid_date|
-            subject.__send__("#{field}=", invalid_date)
-            expect(subject).not_to be_valid
+            subject.__send__("#{field}=", Chronic::parse(invalid_date))
+            if blank_ok? && Chronic::parse(invalid_date).nil?
+              expect(subject).to be_valid
+            else
+              expect(subject).not_to be_valid
+            end
           end
         end
       end
@@ -48,7 +52,7 @@ describe User do
         it "should be valid" do
           valid_dates = %w[1/31/2013 2/29/2004 2/29/2000]
           valid_dates.each do |valid_date|
-            subject.__send__("#{field}=", valid_date)
+            subject.__send__("#{field}=", Chronic::parse(valid_date))
             expect(subject).to be_valid
           end
         end
@@ -150,11 +154,18 @@ describe User do
 
     describe "when start_date is invalid" do
       let(:field) { :start_date }
+      let(:blank_ok?) { false }
       it_should_behave_like "a valid date field"
+    end
+
+    describe "when no birthday is provided" do
+      before { @user.birthday = ' ' }
+      it { should be_valid }
     end
 
     describe "when birthday is invalid" do
       let(:field) { :birthday }
+      let(:blank_ok?) { true }
       it_should_behave_like "a valid date field"
     end
 

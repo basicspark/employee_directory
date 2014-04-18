@@ -9,5 +9,7 @@ class User < ActiveRecord::Base
             uniqueness: { case_sensitive: false }
   validates :address, length: { maximum: 200 }
   validates :user_type, inclusion: { in: (0..2) }
+  validates :start_date, date: true
+  validates :birthday, date: true, unless: -> (a) { a.birthday.blank? }
 
 end
