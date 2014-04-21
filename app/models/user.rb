@@ -11,5 +11,4 @@ class User < ActiveRecord::Base
   validates :user_type, inclusion: { in: (0..2) }
   validates :start_date, date: true
   validates :birthday, date: true, unless: -> (a) { a.birthday.blank? }
-
 end
