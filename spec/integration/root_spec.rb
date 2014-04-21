@@ -22,4 +22,5 @@ feature "Root page" do
       expect(page).to have_title(application_name)
     end
   end
+
 end
