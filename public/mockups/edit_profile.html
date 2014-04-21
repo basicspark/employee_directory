@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Phone Book</title>
+
+   <!-- Bootstrap core CSS with Jasny-->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/jasny-bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="custom.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <!-- ********************* NAVIGATION BAR ********************* -->
+      <div class="navbar navbar-default">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand visible-xs" href="index.html">Acme Company<small>&nbsp;(xs)</small></a>
+          <a class="navbar-brand visible-sm" href="index.html">Acme Company<small>&nbsp;(sm)</small></a>
+          <a class="navbar-brand visible-md" href="index.html">Acme Company<small>&nbsp;(md)</small></a>
+          <a class="navbar-brand visible-lg" href="index.html">Acme Company<small>&nbsp;(lg)</small></a>
+        </div>
+        <div class="navbar-collapse collapse navbar-responsive-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="root_logged_in.html">Home</a></li>
+            <li class="active"><a href="edit_profile.html">Edit My Profile</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Maintenance <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="user_maint_list.html">Users</a></li>
+                <li><a href="dept_maint_list.html">Departments</a></li>
+              </ul>
+            </li>
+            <li><a href="index.html">Logout</a></li>
+          </ul>
+        </div>
+      </div> <!-- navbar *********************************************-->
+
+
+      <!-- ********************* PAGE HEADER ********************* -->
+      <div class="row clearfix">
+        <div class="col-xs-12 column">
+          <div class="page-header">
+            <h1>
+              Phone Book 
+            </h1>
+          </div>
+        </div>
+      </div> <!-- row page header ********************************-->
+
+
+      <!-- ********************* MAIN CONTENT ********************* -->
+      <div class="row clearfix">
+
+        <div class="col-md-8 column">
+
+          <!-- ERROR PANEL -->
+          <div class="row">
+            <div class="col-xs-12 column">
+              <div class="panel panel-danger">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Please correct the following:</h3>
+                </div>
+                <div class="panel-body">
+                  <ul>
+                    <li>Phone number cannot be blank</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>  <!-- row error panel -->
+
+          <!-- PROFILE FORM -->
+          <div class="well">
+            <form class="form-horizontal">
+              <fieldset>
+                <legend>Edit My Profile</legend>
+     
+                <!-- First Name -->
+                <div class="form-group">
+                  <label for="first_name" class="col-lg-2 control-label">First Name</label>
+                  <div class="col-lg-10">
+                    <input type="text" class="form-control" id="first_name" value="Jane" disabled="">
+                  </div>
+                </div>
+
+                <!-- Last Name -->
+                <div class="form-group">
+                  <label for="last_name" class="col-lg-2 control-label">Last Name</label>
+                  <div class="col-lg-10">
+                    <input type="text" class="form-control" id="last_name" value="Doe" disabled="">
+                  </div>
+                </div>
+                
+                <!-- Department -->
+                <div class="form-group">
+                  <label for="department_id" class="col-lg-2 control-label">Department</label>
+                  <div class="col-lg-10">
+                    <select class="form-control" id="department_id" disabled="">
+                      <option selected="">Accounting</option>
+                      <option>Customer Service</option>
+                      <option>Human Resources</option>
+                      <option>Information Technology</option>
+                      <option>Office Services</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Phone -->
+                <div class="form-group has-error">
+                  <label for="phone" class="col-lg-2 control-label">Phone</label>
+                  <div class="col-lg-10">
+                    <input type="tel" class="form-control" id="phone" data-mask="999-999-9999" placeholder="xxx-xxx-xxxx" value="312-555-1725" required>
+                  </div>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                  <label for="email" class="col-lg-2 control-label">Email</label>
+                  <div class="col-lg-10">
+                    <input type="email" class="form-control" id="email" placeholder="Email" value="jane@acme.com" required>
+                  </div>
+                </div>
+
+                <!-- Address -->
+                <div class="form-group">
+                  <label for="address" class="col-lg-2 control-label">Address</label>
+                  <div class="col-lg-10">
+                    <textarea class="form-control" rows="5" id="address" placeholder="Mailing address">123 N. Anywhere St.&#13;&#10;Apt. 3-W&#13;&#10;Chicago, IL 60640</textarea>
+                  </div>
+                </div>
+
+                <!-- Start Date -->
+                <div class="form-group">
+                  <label for="start_date" class="col-lg-2 control-label">Start Date</label>
+                  <div class="col-lg-10">
+                    <input type="date" class="form-control" id="start_date" value="2004-03-31" disabled="">
+                  </div>
+                </div>
+
+                <!-- Birthday -->
+                <div class="form-group">
+                  <label for="birthday" class="col-lg-2 control-label">Birthday</label>
+                  <div class="col-lg-10">
+                    <input type="text" class="form-control" id="birthday" data-mask="99/99" placeholder="mm/dd" value="08/01" disabled="">
+                  </div>
+                </div>
+                
+                <!-- Submit/Cancel Buttons -->
+                <div class="form-group">
+                  <div class="col-lg-10 col-lg-offset-2">
+                    <button class="btn btn-default">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                  </div>
+                </div>
+              </fieldset>
+            </form>
+          </div> <!-- well -->
+        </div> <!-- col profile form -->
+
+        <!-- SIDE PANEL -->
+        <div class="col-md-4 column">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                User Photo Preview
+              </h3>
+            </div>
+            <div class="panel-body">
+              <div class="image-preview">
+                <img src="images/jane.jpg" />
+              </div>
+              <div>
+                <br />
+                <p><i>User image is loaded automatically based on email address via the <a href="https://www.gravatar.com" target="_blank">Gravatar</a> service.</i></p>
+              </div>
+            </div> <!-- panel body -->
+          </div> <!-- panel -->
+        </div> <!-- col side panel -->
+
+      </div> <!-- row main content ************************************** -->
+
+    </div> <!-- container -->
+
+ <!-- Bootstrap core JavaScript with Jasny
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/docs.min.js"></script>
+    <script src="../js/jasny-bootstrap.min.js"></script>
+  </body>
+</html>
