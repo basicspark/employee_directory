@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Phone Book</title>
+
+    <!-- Bootstrap core CSS with Jasny-->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/jasny-bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="custom.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <!-- ********************* NAVIGATION BAR ********************* -->
+      <div class="navbar navbar-default">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand visible-xs" href="index.html">Acme Company<small>&nbsp;(xs)</small></a>
+          <a class="navbar-brand visible-sm" href="index.html">Acme Company<small>&nbsp;(sm)</small></a>
+          <a class="navbar-brand visible-md" href="index.html">Acme Company<small>&nbsp;(md)</small></a>
+          <a class="navbar-brand visible-lg" href="index.html">Acme Company<small>&nbsp;(lg)</small></a>
+        </div>
+        <div class="navbar-collapse collapse navbar-responsive-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="root_logged_in.html">Home</a></li>
+            <li><a href="edit_profile.html">Edit My Profile</a></li>
+            <li class="dropdown active">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Maintenance <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="user_maint_list.html">Users</a></li>
+                <li><a href="dept_maint_list.html">Departments</a></li>
+              </ul>
+            </li>
+            <li><a href="index.html">Logout</a></li>
+          </ul>
+        </div>
+      </div> <!-- navbar *********************************************-->
+
+
+      <!-- ********************* PAGE HEADER ********************* -->
+      <div class="row clearfix">
+        <div class="col-xs-12 column">
+          <div class="page-header">
+            <h1>
+              Phone Book 
+            </h1>
+          </div>
+        </div>
+      </div> <!-- row page header ********************************-->
+
+
+      <!-- ********************* MAIN CONTENT ********************* -->
+      <div class="row clearfix">
+
+        <div class="col-md-9 column">
+
+          <!-- NOTIFICATION BOX -->
+          <div class="row">
+            <div class="col-xs-12 column">
+              <div class="alert alert-dismissable alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                Department successfully deleted.
+              </div>
+            </div>
+          </div>  <!-- row notification box -->
+
+          <!-- DEPARTMENT LIST -->
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                Department Maintenance
+              </h3>
+              <small><a href="dept_maint_form.html" class="new-user-link">Create New Department</a></small>
+            </div>
+            <div class="panel-body">
+              <table class="table table-striped table-hover ">
+                <thead>
+                  <tr>
+                    <th>Action</th>
+                    <th>Department Name</th>
+                    <th>Location</th>
+                    <th>Phone</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <ul class="dept-actions">
+                        <li class="dept-action-item"><a href="dept_maint_form.html">Edit</a></li>
+                        <li class="dept-action-item"><a href="#">Delete</a></li>
+                      </ul>
+                    </td>
+                    <td>Accounting</td>
+                    <td>Chicago Headquarters</td>
+                    <td>312-555-1001</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <ul class="dept-actions">
+                        <li class="dept-action-item"><a href="dept_maint_form.html">Edit</a></li>
+                        <li class="dept-action-item"><a href="#">Delete</a></li>
+                      </ul>
+                    </td>
+                    <td>Customer Service</td>
+                    <td>San Diego</td>
+                    <td>312-555-1000</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <ul class="dept-actions">
+                        <li class="dept-action-item"><a href="dept_maint_form.html">Edit</a></li>
+                        <li class="dept-action-item"><a href="#">Delete</a></li>
+                      </ul>
+                    </td>
+                    <td>Human Resources</td>
+                    <td>Chicago Headquarters</td>
+                    <td>312-555-1002</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <ul class="dept-actions">
+                        <li class="dept-action-item"><a href="dept_maint_form.html">Edit</a></li>
+                        <li class="dept-action-item"><a href="#">Delete</a></li>
+                      </ul>
+                    </td>
+                    <td>Information Technology</td>
+                    <td>San Diego</td>
+                    <td>312-555-1005</td>
+                  </tr>
+                </tbody>
+              </table>
+              <ul class="pagination">
+                <li class="disabled"><a href="#">«</a></li>
+                <li class="active"><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">»</a></li>
+              </ul>
+            </div> <!-- panel body -->
+          </div> <!-- panel -->
+        </div> <!-- col dept list -->
+
+      </div> <!-- row main content ************************************** -->
+
+    </div> <!-- container -->
+
+    <!-- Bootstrap core JavaScript with Jasny
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/docs.min.js"></script>
+    <script src="../js/jasny-bootstrap.min.js"></script>
+  </body>
+</html>
