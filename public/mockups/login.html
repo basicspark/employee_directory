@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Phone Book</title>
+
+    <!-- Bootstrap core CSS with Jasny-->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/jasny-bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="custom.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+  <div class="container">
+
+    <!-- ********************* NAVIGATION BAR ********************* -->
+    <div class="navbar navbar-default">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand visible-xs" href="index.html">Acme Company<small>&nbsp;(xs)</small></a>
+        <a class="navbar-brand visible-sm" href="index.html">Acme Company<small>&nbsp;(sm)</small></a>
+        <a class="navbar-brand visible-md" href="index.html">Acme Company<small>&nbsp;(md)</small></a>
+        <a class="navbar-brand visible-lg" href="index.html">Acme Company<small>&nbsp;(lg)</small></a>
+      </div>
+      <div class="navbar-collapse collapse navbar-responsive-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="login.html">Login</a></li>
+        </ul>
+      </div>
+    </div> <!-- navbar *********************************************-->
+
+
+    <!-- ********************* PAGE HEADER ********************* -->
+    <div class="row clearfix">
+      <div class="col-xs-12 column">
+        <div class="page-header">
+          <h1>
+            Phone Book
+          </h1>
+        </div>
+      </div>
+    </div> <!-- row page header ********************************-->
+
+
+    <!-- ********************* MAIN CONTENT ********************* -->
+    <!-- Error Panel -->
+    <div class="row clearfix">
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+        <div class="alert alert-dismissable alert-danger">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          Incorrect username/password combination. Please try again.
+        </div>
+      </div>
+      <div class="col-md-3"></div>
+    </div> <!-- Error Panel -->
+
+    <!-- Login Form -->
+    <div class="row clearfix signin-row">
+      <div class="col-md-4">
+      </div>
+      <div class="col-md-4 column">
+        <form class="form-signin" role="form">
+          <h2 class="form-signin-heading">Please log in</h2>
+          <div class="form-group">
+            <input type="email" class="form-control" placeholder="Email address" value="user@acme.com" required autofocus>
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" placeholder="Password" value="password" required>
+          </div>
+          <label class="checkbox remember-me-text">
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+          <button class="btn btn-lg btn-primary btn-block" type="submit" formaction="root_logged_in.html">Log in</button>
+        </form>
+      </div>
+      <div class="col-md-4">
+      </div>
+    </div> <!-- Login Form -->
+
+  </div> <!-- container -->
+
+  <!-- Bootstrap core JavaScript with Jasny
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
+  <script src="../js/docs.min.js"></script>
+  <script src="../js/jasny-bootstrap.min.js"></script>
+  </body>
+</html>
