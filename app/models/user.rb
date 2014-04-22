@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  belongs_to :department
 
   VALID_PHONE_REGEX = /\A[2-9]\d{2}-[2-9]\d{2}-\d{4}\z/
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(?:\.[a-z\d\-]+)*\.[a-z]+\z/i

@@ -20,6 +20,7 @@ describe User do
     it { should respond_to(:start_date) }
     it { should respond_to(:birthday) }
     it { should respond_to(:user_type) }
+    it { should respond_to(:department) }
   end
 
   context "when assigning values to attributes" do
