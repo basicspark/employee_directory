@@ -1,29 +1,37 @@
-<h1>Listing departments</h1>
+<!-- ********************* MAIN CONTENT ********************* -->
+<div class="row clearfix">
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Location</th>
-      <th>Phone</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+  <div class="col-md-9 column">
 
-  <tbody>
-    <% @departments.each do |department| %>
-      <tr>
-        <td><%= department.name %></td>
-        <td><%= department.location %></td>
-        <td><%= department.phone %></td>
-        <td><%= link_to 'Show', department %></td>
-        <td><%= link_to 'Edit', edit_department_path(department) %></td>
-        <td><%= link_to 'Destroy', department, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
 
-<br>
 
-<%= link_to 'New Department', new_department_path %>
+    <!-- DEPARTMENT LIST -->
+    <div class="panel panel-default table-panel">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          Department Maintenance
+        </h3>
+        <small><%= link_to 'Create New Department', new_department_path,
+                           class: 'new-dept-link' %></small>
+      </div>
+      <div class="panel-body">
+        <table class="table table-striped table-hover ">
+          <thead>
+          <tr>
+            <th>Action</th>
+            <th>Department Name</th>
+            <th>Location</th>
+            <th>Phone</th>
+          </tr>
+          </thead>
+          <tbody>
+            <%= render @departments %>
+          </tbody>
+        </table>
+        <%= will_paginate @departments, renderer: BootstrapPagination::Rails %>
+      </div> <!-- panel body -->
+    </div> <!-- panel -->
+  </div> <!-- col dept list -->
+
+</div> <!-- row main content ************************************** -->
+

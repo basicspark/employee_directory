@@ -6,4 +6,5 @@ class Department < ActiveRecord::Base
   validates :phone, format: { with: EmployeeDirectory::VALID_PHONE_REGEX },
             allow_blank: true
 
+  self.per_page = 20
 end

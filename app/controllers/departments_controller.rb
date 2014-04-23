@@ -4,7 +4,7 @@ class DepartmentsController < ApplicationController
   # GET /departments
   # GET /departments.json
   def index
-    @departments = Department.all
+    @departments = Department.paginate(page: params[:page])
   end
 
   # GET /departments/1
@@ -56,6 +56,7 @@ class DepartmentsController < ApplicationController
   def destroy
     @department.destroy
     respond_to do |format|
+      format.js
       format.html { redirect_to departments_url }
       format.json { head :no_content }
     end
