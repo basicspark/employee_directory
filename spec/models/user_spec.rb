@@ -20,11 +20,12 @@ describe User do
     it { should respond_to(:start_date) }
     it { should respond_to(:birthday) }
     it { should respond_to(:user_type) }
+    it { should respond_to(:department) }
   end
 
   context "when assigning values to attributes" do
 
-    shared_examples_for "a valid date field" do
+    shared_examples_for "a record with valid date" do
       it "does not allow invalid dates" do
         invalid_dates = ["3/31S/2013", "3/0/2012", "3/1/20234", "1/32/2013",
                          "2/30/2013", "3/32/2013", "4/31/2013", "5/32/2013",
@@ -74,14 +75,7 @@ describe User do
       expect(build :user, phone: ' ').not_to be_valid
     end
 
-    it "does not allow invalid phone numbers" do
-      bad_numbers = ["123", "123 444 1212", "312 454 5765", "(122) 223-2332",
-                     "232-2323232","(122) 444 1212", "232-233-293S", "232-232-232",
-                     "2223331212", "22212312344", "112-654-5557"]
-      bad_numbers.each do |number|
-        expect(build :user, phone: number).not_to be_valid
-      end
-    end
+    it_should_behave_like "a record with valid phone number"
 
     it "is invalid without an email" do
       expect(build :user, email: ' ').not_to be_valid
@@ -104,7 +98,7 @@ describe User do
 
     it "does not allow a duplicate email" do
       create :user, email: 'jdoe@example.com'
-      expect(build :user, email: 'jdoe@example.com').not_to be_valid
+      expect(build :user, email: 'jdoe@example.com'.upcase).not_to be_valid
     end
 
     it "does not allow an address longer than 200" do
@@ -118,7 +112,7 @@ describe User do
     context "when providing a start_date" do
       let(:field) { :start_date }
       let(:blank_ok?) { false }
-      it_should_behave_like "a valid date field"
+      it_should_behave_like "a record with valid date"
     end
 
     it "does not require a birthday" do
@@ -128,7 +122,7 @@ describe User do
     context "when providing a birthday" do
       let(:field) { :birthday }
       let(:blank_ok?) { true }
-      it_should_behave_like "a valid date field"
+      it_should_behave_like "a record with valid date"
     end
 
     it "is invalid without a user_type" do
