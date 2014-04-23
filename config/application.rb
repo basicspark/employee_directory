@@ -38,3 +38,5 @@ module EmployeeDirectory
     end
   end
 end
+
+require 'employee_directory'

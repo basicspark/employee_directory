@@ -2,8 +2,11 @@
 
 FactoryGirl.define do
   factory :department do
-    name "MyString"
-    location "MyString"
-    phone "MyString"
+    sequence(:name) { |n| "Department-#{n}" }
+    location { Faker::Address.city }
+
+    factory :department_with_phone do
+      phone "312-555-1212"
+    end
   end
 end
