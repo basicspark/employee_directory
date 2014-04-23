@@ -16,6 +16,8 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'figaro', '~> 0.7.0'
 gem 'chronic', '~> 0.10.2'
 gem 'date_validator', '~> 0.7.0'
+gem 'will_paginate', '~> 3.0'
+gem 'will_paginate-bootstrap', '~> 1.0.0'
 
 group :development do
   gem 'spring'

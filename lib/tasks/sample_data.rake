@@ -28,7 +28,7 @@ def make_departments
 end
 
 def make_users
-  200.times do |n|
+  400.times do |n|
     User.create!(first_name: Faker::Name.first_name,
                  last_name: Faker::Name.last_name,
                  department: retrieve_random_department,
