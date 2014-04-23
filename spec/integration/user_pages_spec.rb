@@ -21,8 +21,8 @@ describe "User pages" do
         expect(page).to have_selector('td', text: @user.first_name)
       end
 
-      it "contains the user's department" do
-        expect(page).to have_selector('td', text: @user.department_id)
+      it "contains the user's department name" do
+        expect(page).to have_selector('td', text: @user.department.name)
       end
 
       it "contains the user's phone number" do
