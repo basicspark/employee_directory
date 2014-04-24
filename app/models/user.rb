@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   belongs_to :department
 
+  before_create :create_remember_token
+
   validates :first_name, :last_name, presence: true, length: { maximum: 50 }
   validates :department_id, presence: true
   validates :phone, presence: true,
@@ -12,6 +14,22 @@ class User < ActiveRecord::Base
   validates :user_type, inclusion: { in: (0..2) }
   validates :start_date, date: true
   validates :birthday, date: true, allow_blank: true
+  validates :password, length: { minimum: 6 }
 
-  self.per_page = 20
+  has_secure_password
+  self.per_page = 15
+
+  def User.new_remember_token
+    SecureRandom.urlsafe_base64
+  end
+
+  def User.digest(token)
+    Digest::SHA1.hexdigest(token.to_s)
+  end
+
+  private
+
+    def create_remember_token
+      self.remember_token = User.digest(User.new_remember_token)
+    end
 end

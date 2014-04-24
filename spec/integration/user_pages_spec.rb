@@ -32,7 +32,7 @@ describe "User pages" do
     describe "pagination" do
 
       before(:all) do
-        40.times { create :user }
+        15.times { create :user }
       end
 
       after(:all) do
