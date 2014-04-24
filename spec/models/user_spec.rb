@@ -10,7 +10,7 @@ describe User do
 
   subject { user }
 
-  context "when responding to instance methods" do
+  describe "responding to instance methods" do
     it { should respond_to(:first_name) }
     it { should respond_to(:last_name) }
     it { should respond_to(:department_id) }
@@ -21,9 +21,15 @@ describe User do
     it { should respond_to(:birthday) }
     it { should respond_to(:user_type) }
     it { should respond_to(:department) }
+    it { should respond_to(:password_digest)}
+    it { should respond_to(:password) }
+    it { should respond_to(:password_confirmation) }
+    it { should respond_to(:remember_token) }
+    it { should respond_to(:authenticate) }
+
   end
 
-  context "when assigning values to attributes" do
+  describe "assigning values to attributes" do
 
     shared_examples_for "a record with valid date" do
       it "does not allow invalid dates" do
@@ -140,6 +146,45 @@ describe User do
       valid_types = (0..2).to_a
       valid_types.each do |valid_type|
         expect(build :user, user_type: valid_type).to be_valid
+      end
+    end
+
+    it "is invalid without a password" do
+      expect(build :user, password: ' ').not_to be_valid
+    end
+
+    it "is invalid when password_confirmation doesn't match password" do
+      expect(build :user, password: 'september',
+                   password_confirmation: 'october').not_to be_valid
+    end
+
+    it "does not allow a password shorter than 6" do
+      expect(build :user, password: 'X' * 5,
+                   password_confirmation: 'X' * 5).not_to be_valid
+    end
+  end
+
+  describe "authenticating" do
+    before { user.save }
+    let(:found_user) { User.find_by(email: user.email) }
+
+    describe "remember token" do
+      it "has a non-blank remember token immediately after save" do
+        expect(user.remember_token).not_to be_blank
+      end
+    end
+
+    context "with valid password" do
+      it "returns the authenticated user" do
+        expect(user).to eq(found_user.authenticate user.password)
+      end
+    end
+
+    context "within invalid password" do
+      let(:incorrect_password_user) { found_user.authenticate 'incorrect' }
+      it "returns false instead of a valid user" do
+        expect(user).not_to eq(incorrect_password_user)
+        expect(incorrect_password_user).to be_false
       end
     end
   end

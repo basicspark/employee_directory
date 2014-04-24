@@ -9,6 +9,8 @@ FactoryGirl.define do
     email { Faker::Internet.email }
     start_date { rand(7000).days.ago }
     user_type 0
+    password 'september'
+    password_confirmation 'september'
 
     factory :user_with_address_and_birthday do
       address { Faker::Address.street_address + "\n" +

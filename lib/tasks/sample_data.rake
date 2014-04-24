@@ -28,6 +28,17 @@ def make_departments
 end
 
 def make_users
+  User.create!(first_name: 'Russ',
+               last_name: 'Martin',
+               department: Department.find_by(name: 'Information Technology'),
+               phone: '312-562-8510',
+               email: 'russ@russconsult.com',
+               start_date: Chronic::parse('6-1-2013'),
+               address: "1123 W. Hummingbird Way\nApt. 304\nChicago, IL 60644",
+               birthday: Chronic::parse('5-4-1980'),
+               user_type: 1,
+               password: 'myfirstapp',
+               password_confirmation: 'myfirstapp')
   400.times do |n|
     User.create!(first_name: Faker::Name.first_name,
                  last_name: Faker::Name.last_name,
@@ -37,7 +48,9 @@ def make_users
                  start_date: rand(7000).days.ago,
                  address: generate_address,
                  birthday: rand(9000..24000).days.ago,
-                 user_type: 1)
+                 user_type: 1,
+                 password: 'september',
+                 password_confirmation: 'september')
   end
 end
 

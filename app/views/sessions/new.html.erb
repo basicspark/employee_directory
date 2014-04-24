@@ -1,0 +1,41 @@
+<!-- ********************* MAIN CONTENT ********************* -->
+<!-- Error Panel -->
+<% if flash.any? %>
+  <div class="row clearfix">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <div class="alert alert-dismissable alert-danger">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <% flash.each do |key, value| %>
+          <p><%= value %></p>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-md-3"></div>
+  </div> <!-- Error Panel -->
+<% end %>
+
+<!-- Login Form -->
+<div class="row clearfix signin-row">
+  <div class="col-md-4">
+  </div>
+  <div class="col-md-4 column">
+
+
+<%= bootstrap_form_tag url: sessions_path do |f| %>
+  <h2 class="form-signin-heading">Please log in</h2>
+  <%= f.email_field :email, hide_label: true,
+                    placeholder: 'Email address',
+                    autofocus: true, required: true %>
+  <%= f.password_field :password, hide_label: true,
+                       placeholder: 'Password', required: true %>
+      <label class="checkbox remember-me-text">
+        <input type="checkbox" value="remember-me"> Remember me
+      </label>
+  <%= f.submit 'Log in', class: 'btn btn-lg btn-primary btn-block' %>
+<% end %>
+
+  </div>
+  <div class="col-md-4">
+  </div>
+</div> <!-- Login Form -->
