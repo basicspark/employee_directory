@@ -30,7 +30,9 @@
 
     <%= f.phone_field :phone, class: 'mask-phone', placeholder: 'xxx-xxx-xxxx' %>
 
-    <%= f.submit %>
+    <%= f.form_group do %>
+      <%= f.submit class: 'btn btn-success'%>
+    <% end %>
   <% end %>
 
 </div> <!-- well -->

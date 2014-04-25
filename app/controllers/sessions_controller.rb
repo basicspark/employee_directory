@@ -11,8 +11,8 @@ class SessionsController < ApplicationController
       redirect_to users_path
     else
       # Stay on the Login page and display an error
-      flash.now[:error] = "Incorrect username/password combination. Please try again."
-      render 'new'
+      flash[:error] = "Incorrect username/password combination. Please try again."
+      redirect_to login_path
     end
 
   end

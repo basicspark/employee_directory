@@ -1,0 +1,13 @@
+<% if flash.any? %>
+  <!-- FLASH BOX -->
+  <div class="row clearfix">
+    <div class="col-xs-12">
+      <% flash.each do |type, message| %>
+        <div class="alert alert-dismissable <%= flash_class_for(type) %>">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <p><%= message %></p>
+        </div>
+      <% end %>
+    </div>
+  </div> <!-- Flash Box -->
+<% end %>

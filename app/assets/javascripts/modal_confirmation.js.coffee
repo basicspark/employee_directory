@@ -34,7 +34,7 @@ $.rails.allowAction = (element) ->
                    <p>This can't be undone</p>
                  </div>
                  <div class="modal-footer">
-                   <button class="btn" data-dismiss="modal" aria-hidden="true">
+                   <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">
                      No, I changed my mind
                    </button>
                  </div>
