@@ -11,7 +11,7 @@
          data-toggle="dropdown">Maintenance <b class="caret"></b></a>
       <ul class="dropdown-menu">
         <li><a href="#">Users</a></li>
-        <li><a href="#">Departments</a></li>
+        <li><%= link_to 'Departments', departments_path %></li>
       </ul>
     </li>
     <li class="<%= active_class_for :logout %>">
