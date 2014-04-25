@@ -10,5 +10,65 @@ shared_examples_for "a record with valid phone number" do
   end
 end
 
+shared_examples_for 'all pages with logged out users' do
+  it "does not show the Home link in the top menu" do
+    expect(page).not_to have_link('Home', href: users_path)
+  end
+
+  it "does not show the Edit My Profile link in the top menu" do
+    expect(page).not_to have_link('Edit My Profile')
+  end
+
+  it "shows the Login link in the top menu" do
+    expect(page).to have_link('Login', href: login_path)
+  end
+end
+
+shared_examples_for 'all pages with logged in users' do
+  it "shows the Home link in the top menu" do
+    expect(page).to have_link('Home', href: users_path)
+  end
+
+  it "shows the Edit My Profile link in the top menu" do
+    expect(page).to have_link('Edit My Profile',
+                              href: path_to_test)
+  end
+
+  it "shows the Logout link in the top menu" do
+    expect(page).to have_link('Logout', href: logout_path)
+  end
+end
+
+shared_examples_for 'the login page' do
+  it "displays the login form instructions" do
+    expect(page).to have_selector('h2.form-signin-heading',
+                                  text: 'Please log in')
+  end
+
+  it "shows the Login link as active" do
+    expect(page).to have_selector('li.active', text: 'Login')
+  end
+end
+
+shared_examples_for 'the failed login page' do
+  it_should_behave_like 'the login page'
+  it_should_behave_like 'all pages with logged out users'
+
+  it "displays the login error message" do
+    expect(page).to have_selector('div.alert.alert-dismissable.alert-danger',
+                                  text: "Incorrect username/password combination. Please try again.")
+  end
+end
+
+shared_examples_for 'the home page' do
+  it "displays the user list screen" do
+    expect(page).to have_selector('th', text: 'Last Name')
+  end
+
+  it "shows the Home link as active" do
+    expect(page).to have_selector('li.active', text: 'Home')
+  end
+end
+
 
 
