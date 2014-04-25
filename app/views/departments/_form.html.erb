@@ -19,22 +19,18 @@
 <% end %>
 
 <div class="well">
-  <%= bootstrap_form_for(@department) do |f| %>
+  <%= bootstrap_form_for(@department, layout: :horizontal,
+                         label_col: 'col-lg-3', control_col: 'col-lg-9') do |f| %>
     <legend>Department Maintenance</legend>
 
-    <div class="field">
-      <%= f.text_field :name, placeholder: 'Department Name',
-                       label: 'Department Name', autofocus: true %>
-    </div>
-    <div class="field">
-      <%= f.text_field :location, placeholder: 'Location' %>
-    </div>
-    <div class="field">
-      <%= f.phone_field :phone, placeholder: 'xxx-xxx-xxxx' %>
-    </div>
-    <div class="actions">
-      <%= f.submit %>
-    </div>
+    <%= f.text_field :name, placeholder: 'Department Name',
+                     label: 'Department Name', class: 'set-focus' %>
+
+    <%= f.text_field :location, placeholder: 'Location' %>
+
+    <%= f.phone_field :phone, class: 'mask-phone', placeholder: 'xxx-xxx-xxxx' %>
+
+    <%= f.submit %>
   <% end %>
 
 </div> <!-- well -->

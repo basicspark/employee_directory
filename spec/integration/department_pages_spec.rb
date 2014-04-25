@@ -70,6 +70,55 @@ describe "Department pages" do
         it "displays the blank Phone field" do
           expect(page).to have_selector('input#department_phone.form-control', text: nil)
         end
+
+        context "then submitting with no populated fields" do
+          before { click_button 'Create Department' }
+
+          it "displays the error summary box" do
+            expect(page).to have_selector('div.panel.panel-danger',
+                                          text: 'Please correct the following:')
+          end
+
+          it "shows the name can't be blank error" do
+            expect(page).to have_selector('li', text: "Name can't be blank")
+          end
+
+          it "highlights the Department Name field as being in error" do
+            expect(page).to have_selector('div.form-group.has-error',
+                                          text: 'Department Name')
+          end
+        end
+
+        context "then submitting a valid record" do
+          before do
+            fill_in 'Department Name', with: 'My New Department'
+            fill_in 'Location', with: 'My Location'
+            fill_in 'Phone', with: '773-555-1212'
+            click_button 'Create Department'
+          end
+
+          it "saves and displays the new department name" do
+            expect(page).to have_selector('td', text: 'My New Department')
+          end
+
+          it "saves and displays the new department location" do
+            expect(page).to have_selector('td', text: 'My Location')
+          end
+
+          it "saves and displays the new department phone number" do
+            expect(page).to have_selector('td', text: '773-555-1212')
+          end
+
+          it "shows the department list" do
+            expect(page).to have_selector('h3.panel-title',
+                                          text: 'Department Maintenance')
+          end
+
+          it "displays a success message" do
+            expect(page).to have_selector('div.alert.alert-dismissable.alert-success',
+                                          text: 'Department was successfully created.')
+          end
+        end
       end
     end
 
