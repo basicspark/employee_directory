@@ -1,29 +1,40 @@
-<%= form_for(@department) do |f| %>
-  <% if @department.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@department.errors.count, "error") %> prohibited this department from being saved:</h2>
+<% if @department.errors.any? %>
+  <!-- ERROR PANEL -->
+  <div class="row">
+    <div class="col-xs-12 column">
+      <div class="panel panel-danger">
+        <div class="panel-heading">
+          <h3 class="panel-title">Please correct the following:</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <% @department.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>  <!-- row error panel -->
+<% end %>
 
-      <ul>
-      <% @department.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+<div class="well">
+  <%= bootstrap_form_for(@department) do |f| %>
+    <legend>Department Maintenance</legend>
+
+    <div class="field">
+      <%= f.text_field :name, placeholder: 'Department Name',
+                       label: 'Department Name', autofocus: true %>
+    </div>
+    <div class="field">
+      <%= f.text_field :location, placeholder: 'Location' %>
+    </div>
+    <div class="field">
+      <%= f.phone_field :phone, placeholder: 'xxx-xxx-xxxx' %>
+    </div>
+    <div class="actions">
+      <%= f.submit %>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :location %><br>
-    <%= f.text_field :location %>
-  </div>
-  <div class="field">
-    <%= f.label :phone %><br>
-    <%= f.text_field :phone %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div> <!-- well -->
