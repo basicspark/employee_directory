@@ -24,4 +24,19 @@ module ApplicationHelper
         return nil
     end
   end
+
+  def flash_class_for(type)
+    case type
+      when 'notice'
+        'alert-info'
+      when 'error'
+        'alert-danger'
+      when 'alert'
+        'alert-warning'
+      when 'success'
+        'alert-success'
+      else
+        type.to_s
+    end
+  end
 end
