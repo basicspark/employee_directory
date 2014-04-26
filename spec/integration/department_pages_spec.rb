@@ -1,9 +1,12 @@
 require 'spec_helper'
 
 describe "Department pages" do
+  let(:user_to_log_in) { create :user, password: 'letmein',
+                                password_confirmation: 'letmein' }
 
   describe "index" do
     before do
+      log_in_user user_to_log_in
       @department = create :department_with_phone
       visit departments_path
     end
@@ -50,7 +53,8 @@ describe "Department pages" do
 
   describe "maintenance" do
     before do
-      create :department
+      log_in_user user_to_log_in
+      @department = create :department_with_phone
       visit departments_path
     end
 
@@ -137,10 +141,6 @@ describe "Department pages" do
     end
 
     context "editing" do
-      before do
-        @department = create :department_with_phone
-        visit departments_path
-      end
 
       context "clicking the edit link in table" do
         before do
@@ -246,13 +246,35 @@ describe "Department pages" do
     end
 
     context "deleting" do
-
-      it "deletes the department" do
-        expect do
+      before do
+        within(:css, "tr##{@department.id}") do
           click_link('Delete')
-        end.to change(Department, :count).by(-1)
+        end
+      end
+
+      it "deletes the correct department from the database" do
+        expect { @department.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it "no longer shows the deleted department in the lsit" do
+        expect(page).not_to have_selector('td', text: @department.name)
       end
     end
+  end
 
+  describe "authorized actions" do
+
+    context "when not logged in" do
+      context "and accessing the department maintenance list" do
+        before { visit departments_path }
+
+        it_should_behave_like 'the login page'
+
+        it "displays a please login message" do
+          expect(page).to have_selector('div.alert.alert-dismissable.alert-info',
+                                        text: 'Please log in.')
+        end
+      end
+    end
   end
 end

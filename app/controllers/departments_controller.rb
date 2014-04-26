@@ -1,5 +1,6 @@
 class DepartmentsController < ApplicationController
-  before_action :set_department, only: [:show, :edit, :update, :destroy]
+  before_action :logged_in_user
+  before_action :set_department, only: [:edit, :update, :destroy]
 
   # GET /departments
   def index
@@ -51,6 +52,7 @@ class DepartmentsController < ApplicationController
   end
 
   private
+
     # Use callbacks to share common setup or constraints between actions.
     def set_department
       @department = Department.find(params[:id])
@@ -59,5 +61,10 @@ class DepartmentsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def department_params
       params.require(:department).permit(:name, :location, :phone)
+    end
+
+    # All actions require a logged in user
+    def logged_in_user
+      redirect_to login_url, notice: 'Please log in.' unless logged_in?
     end
 end
