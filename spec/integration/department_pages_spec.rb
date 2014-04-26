@@ -8,6 +8,10 @@ describe "Department pages" do
       visit departments_path
     end
 
+    it "displays the Department Maintenance list form" do
+      expect(page).to have_selector('h3.panel-title', text: 'Department Maintenance')
+    end
+
     it "displays the department list table" do
       expect(page).to have_selector('table.table-striped.table-hover')
     end
@@ -25,7 +29,7 @@ describe "Department pages" do
     end
 
     it "contains the department's id as the id of the row" do
-      expect(page).to have_selector("tr\##{@department.id}")
+      expect(page).to have_selector("tr##{@department.id}")
     end
 
     describe "pagination" do
@@ -52,11 +56,11 @@ describe "Department pages" do
 
     context "adding" do
 
-      context "when clicking the Create New Department link" do
+      context "clicking the Create New Department link" do
         before { click_link 'Create New Department' }
 
-        it "displays the Department Maintenance form" do
-          expect(page).to have_selector('legend', text: 'Department Maintenance')
+        it "displays the Create Department form" do
+          expect(page).to have_selector('legend', text: 'Create Department')
         end
 
         it "displays the blank Department Name field" do
@@ -119,6 +123,125 @@ describe "Department pages" do
                                           text: 'Department was successfully created.')
           end
         end
+
+        context "then clicking the Go Back link" do
+          before do
+            click_link 'Go Back'
+          end
+
+          it "displays the Department Maintenance list form" do
+            expect(page).to have_selector('h3.panel-title', text: 'Department Maintenance')
+          end
+        end
+      end
+    end
+
+    context "editing" do
+      before do
+        @department = create :department_with_phone
+        visit departments_path
+      end
+
+      context "clicking the edit link in table" do
+        before do
+          within(:css, "tr##{@department.id}") { click_link 'Edit' }
+        end
+
+        it "displays the Edit Department form" do
+          expect(page).to have_selector('legend', text: 'Edit Department')
+        end
+
+        it "displays the correct Department Name field" do
+          expect(find_field('department_name').value).to eq(@department.name)
+        end
+
+        it "displays the correct Location field" do
+          expect(find_field('department_location').value).to eq(@department.location)
+        end
+
+        it "displays the correct Phone field" do
+          expect(find_field('department_phone').value).to eq(@department.phone)
+        end
+
+        context "then submitting with a blanked out Department Name" do
+          before do
+            fill_in 'Department Name', with: ' '
+            click_button 'Update Department'
+          end
+
+          it "displays the error summary box" do
+            expect(page).to have_selector('div.panel.panel-danger',
+                                          text: 'Please correct the following:')
+          end
+
+          it "shows the name can't be blank error" do
+            expect(page).to have_selector('li', text: "Name can't be blank")
+          end
+
+          it "highlights the Department Name field as being in error" do
+            expect(page).to have_selector('div.form-group.has-error',
+                                          text: 'Department Name')
+          end
+        end
+
+        context "then changing all of the fields" do
+          before do
+            fill_in 'Department Name', with: 'New Department Name'
+            fill_in 'Location', with: 'New Location'
+            fill_in 'Phone', with: '888-888-7777'
+            click_button 'Update Department'
+            @department.reload
+          end
+
+          it "saves the updated name to the database" do
+            expect(@department.name).to eq('New Department Name')
+          end
+
+          it "saves the updated location to the database" do
+            expect(@department.location).to eq('New Location')
+          end
+
+          it "saves the updated phone number to the database" do
+            expect(@department.phone).to eq('888-888-7777')
+          end
+
+          it "returns to the department list page" do
+            expect(page).to have_selector('h3.panel-title', text: 'Department Maintenance')
+          end
+
+          it "displays a success message" do
+            expect(page).to have_selector('div.alert.alert-dismissable.alert-success',
+                                          text: 'Department was successfully updated.')
+          end
+
+          it "displays the updated department name on the list screen" do
+            within(:css, "tr##{@department.id}") do
+              expect(page).to have_selector('td', text: 'New Department Name')
+            end
+          end
+
+          it "displays the updated department location on the list screen" do
+            within(:css, "tr##{@department.id}") do
+              expect(page).to have_selector('td', text: 'New Location')
+            end
+          end
+
+          it "displays the updates department phone on the list screen" do
+            within(:css, "tr##{@department.id}") do
+              expect(page).to have_selector('td', text: '888-888-7777')
+            end
+          end
+        end
+
+        context "then clicking the Go Back link" do
+          before do
+            click_link 'Go Back'
+          end
+
+          it "displays the Department Maintenance list form" do
+            expect(page).to have_selector('h3.panel-title', text: 'Department Maintenance')
+          end
+        end
       end
     end
 
@@ -132,5 +255,4 @@ describe "Department pages" do
     end
 
   end
-
 end

@@ -21,7 +21,7 @@
 <div class="well">
   <%= bootstrap_form_for(@department, layout: :horizontal,
                          label_col: 'col-lg-3', control_col: 'col-lg-9') do |f| %>
-    <legend>Department Maintenance</legend>
+    <legend><%= form_legend %></legend>
 
     <%= f.text_field :name, placeholder: 'Department Name',
                      label: 'Department Name', class: 'set-focus' %>
@@ -29,9 +29,8 @@
     <%= f.text_field :location, placeholder: 'Location' %>
 
     <%= f.phone_field :phone, class: 'mask-phone', placeholder: 'xxx-xxx-xxxx' %>
-
     <%= f.form_group do %>
-      <%= f.submit class: 'btn btn-success'%>
+      <%= f.submit class: 'btn btn-success' %>
     <% end %>
   <% end %>
 
