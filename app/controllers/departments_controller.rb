@@ -2,14 +2,8 @@ class DepartmentsController < ApplicationController
   before_action :set_department, only: [:show, :edit, :update, :destroy]
 
   # GET /departments
-  # GET /departments.json
   def index
     @departments = Department.paginate(page: params[:page])
-  end
-
-  # GET /departments/1
-  # GET /departments/1.json
-  def show
   end
 
   # GET /departments/new
@@ -22,7 +16,6 @@ class DepartmentsController < ApplicationController
   end
 
   # POST /departments
-  # POST /departments.json
   def create
     @department = Department.new(department_params)
 
@@ -30,36 +23,30 @@ class DepartmentsController < ApplicationController
       if @department.save
         flash[:success] = "Department was successfully created."
         format.html { redirect_to departments_path }
-        format.json { render :show, status: :created, location: @department }
       else
         format.html { render :new }
-        format.json { render json: @department.errors, status: :unprocessable_entity }
       end
     end
   end
 
   # PATCH/PUT /departments/1
-  # PATCH/PUT /departments/1.json
   def update
     respond_to do |format|
       if @department.update(department_params)
-        format.html { redirect_to @department, notice: 'Department was successfully updated.' }
-        format.json { render :show, status: :ok, location: @department }
+        flash[:success] = 'Department was successfully updated.'
+        format.html { redirect_to departments_path }
       else
         format.html { render :edit }
-        format.json { render json: @department.errors, status: :unprocessable_entity }
       end
     end
   end
 
   # DELETE /departments/1
-  # DELETE /departments/1.json
   def destroy
     @department.destroy
     respond_to do |format|
       format.js
       format.html { redirect_to departments_url }
-      format.json { head :no_content }
     end
   end
 
