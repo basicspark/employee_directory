@@ -41,7 +41,7 @@ describe "User pages" do
       end
 
       it "contains the pagination selector" do
-        expect(page).to have_selector('ul.pagination')
+        expect(page).to have_selector('ul.pagination.pagination-sm')
       end
 
       it "lists each user" do

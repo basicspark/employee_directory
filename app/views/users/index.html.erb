@@ -19,7 +19,8 @@
             <%= render @users %>
           </tbody>
         </table>
-        <%= will_paginate @users, renderer: BootstrapPagination::Rails %>
+        <%= will_paginate @users, renderer: BootstrapPagination::Rails,
+                          class: 'pagination-sm' %>
       </div> <!-- panel body -->
     </div>  <!-- panel -->
   </div> <!-- col user list -->

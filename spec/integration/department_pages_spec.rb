@@ -39,8 +39,8 @@ describe "Department pages" do
       before(:all) { 20.times { create :department } }
       after(:all) { Department.delete_all }
 
-      it "contains the pagination selector" do
-        expect(page).to have_selector('ul.pagination')
+      it "contains the small pagination selector" do
+        expect(page).to have_selector('ul.pagination.pagination-sm')
       end
 
       it "lists each department" do
@@ -263,18 +263,65 @@ describe "Department pages" do
   end
 
   describe "authorized actions" do
+    let(:existing_department) { create :department }
+    let(:new_department) { build :department }
+
+    shared_examples_for 'an unauthorized action' do
+      it_should_behave_like 'the login page'
+
+      it "displays a please login message" do
+        expect(page).to have_selector('div.alert.alert-dismissable.alert-info',
+                                      text: 'Please log in.')
+      end
+    end
 
     context "when not logged in" do
       context "and accessing the department maintenance list" do
         before { visit departments_path }
 
-        it_should_behave_like 'the login page'
+        it_should_behave_like 'an unauthorized action'
+      end
 
-        it "displays a please login message" do
-          expect(page).to have_selector('div.alert.alert-dismissable.alert-info',
-                                        text: 'Please log in.')
+      context "and posting to the create departments path" do
+        before { post departments_path }
+
+        it "redirects to the login path" do
+          expect(response).to redirect_to(login_path)
+        end
+      end
+
+      context "and accessing the new department path" do
+        before { visit new_department_path }
+
+        it_should_behave_like 'an unauthorized action'
+      end
+
+      context "and accessing the edit department path" do
+        before { visit edit_department_path(existing_department) }
+
+        it_should_behave_like 'an unauthorized action'
+      end
+
+      context "and patching to the department path" do
+        before { patch department_path(existing_department) }
+
+        it "redirects to the login path" do
+          expect(response).to redirect_to(login_path)
+        end
+      end
+
+      context "and deleting to the department path" do
+        before { delete department_path(existing_department) }
+
+        it "redirects to the login path" do
+          expect(response).to redirect_to(login_path)
+        end
+
+        it "doesn't delete the record" do
+          expect { existing_department.reload }.not_to raise_error
         end
       end
     end
   end
 end
+
