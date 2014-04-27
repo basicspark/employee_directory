@@ -3,13 +3,13 @@ require 'spec_helper'
 describe DepartmentsController do
   before do
     @department = create :department
-    @user = create :user
+    @admin_user = create :user_admin
   end
 
   describe "deleting via ajax" do
 
     context "when logged in" do
-      before { log_in_user @user, no_capybara: true }
+      before { log_in_user @admin_user, no_capybara: true }
 
       it "reduces the department count by 1" do
        expect do

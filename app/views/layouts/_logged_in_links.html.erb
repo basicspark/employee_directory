@@ -6,14 +6,16 @@
     <li class="<%= active_class_for :profile %>">
       <%= link_to 'Edit My Profile', edit_user_path(current_user) %>
     </li>
-    <li class="dropdown <%= active_class_for :maintenance %>">
-      <a href="#" class="dropdown-toggle"
-         data-toggle="dropdown">Maintenance <b class="caret"></b></a>
-      <ul class="dropdown-menu">
-        <li><a href="#">Users</a></li>
-        <li><%= link_to 'Departments', departments_path %></li>
-      </ul>
-    </li>
+    <% if current_user.admin? %>
+      <li class="dropdown <%= active_class_for :maintenance %>">
+        <a href="#" class="dropdown-toggle"
+           data-toggle="dropdown">Maintenance <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Users</a></li>
+          <li><%= link_to 'Departments', departments_path %></li>
+        </ul>
+      </li>
+    <% end %>
     <li class="<%= active_class_for :logout %>">
       <%= link_to 'Logout', logout_path, method: :delete %>
     </li>

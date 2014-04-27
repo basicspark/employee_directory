@@ -11,7 +11,6 @@ class User < ActiveRecord::Base
             format: { with: EmployeeDirectory::VALID_EMAIL_REGEX },
             uniqueness: { case_sensitive: false }
   validates :address, length: { maximum: 200 }
-  validates :user_type, inclusion: { in: (0..2) }
   validates :start_date, date: true
   validates :birthday, date: true, allow_blank: true
   validates :password, length: { minimum: 6 }

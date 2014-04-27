@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe "Department pages" do
-  let(:user_to_log_in) { create :user, password: 'letmein',
-                                password_confirmation: 'letmein' }
+  let(:admin_user) { create :user_admin }
+  let(:non_admin_user) { create :user }
 
   describe "index" do
     before do
-      log_in_user user_to_log_in
+      log_in_user admin_user
       @department = create :department_with_phone
       visit departments_path
     end
@@ -53,7 +53,7 @@ describe "Department pages" do
 
   describe "maintenance" do
     before do
-      log_in_user user_to_log_in
+      log_in_user admin_user
       @department = create :department_with_phone
       visit departments_path
     end
@@ -281,7 +281,7 @@ describe "Department pages" do
     let(:existing_department) { create :department }
     let(:new_department) { build :department }
 
-    shared_examples_for 'an unauthorized action' do
+    shared_examples_for 'a non-logged in action' do
       it_should_behave_like 'the login page'
 
       it "displays a please login message" do
@@ -294,7 +294,7 @@ describe "Department pages" do
       context "and accessing the department maintenance list" do
         before { visit departments_path }
 
-        it_should_behave_like 'an unauthorized action'
+        it_should_behave_like 'a non-logged in action'
       end
 
       context "and posting to the create departments path" do
@@ -308,13 +308,13 @@ describe "Department pages" do
       context "and accessing the new department path" do
         before { visit new_department_path }
 
-        it_should_behave_like 'an unauthorized action'
+        it_should_behave_like 'a non-logged in action'
       end
 
       context "and accessing the edit department path" do
         before { visit edit_department_path(existing_department) }
 
-        it_should_behave_like 'an unauthorized action'
+        it_should_behave_like 'a non-logged in action'
       end
 
       context "and patching to the department path" do
@@ -337,6 +337,64 @@ describe "Department pages" do
         end
       end
     end
+
+    context "when logged in as a non-admin user" do
+      before { log_in_user(non_admin_user, no_capybara: true) }
+
+      context "and accessing the department maintenance list" do
+        before { get departments_path }
+
+        it "redirects to the root url" do
+          expect(response).to redirect_to(root_url)
+        end
+      end
+
+      context "and posting to the create departments path" do
+        before { post departments_path }
+
+        it "redirects to the root url" do
+          expect(response).to redirect_to(root_url)
+        end
+      end
+
+      context "and accessing the new department path" do
+        before { get new_department_path }
+
+        it "redirects to the root url" do
+          expect(response).to redirect_to(root_url)
+        end
+      end
+
+      context "and accessing the edit department path" do
+        before { get edit_department_path(existing_department) }
+
+        it "redirects to the root url" do
+          expect(response).to redirect_to(root_url)
+        end
+      end
+
+      context "and patching to the department path" do
+        before { patch department_path(existing_department) }
+
+        it "redirects to the root url" do
+          expect(response).to redirect_to(root_url)
+        end
+      end
+
+      context "and deleting to the department path" do
+        before { delete department_path(existing_department) }
+
+        it "redirects to the root url" do
+          expect(response).to redirect_to(root_url)
+        end
+
+        it "doesn't delete the record" do
+          expect { existing_department.reload }.not_to raise_error
+        end
+      end
+    end
   end
 end
+
+
 
