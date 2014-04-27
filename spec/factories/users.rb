@@ -8,7 +8,7 @@ FactoryGirl.define do
     sequence(:phone, 1000) { |n| "312-555-#{n}" }
     email { Faker::Internet.email }
     start_date { rand(7000).days.ago }
-    user_type 0
+    admin false
     password 'september'
     password_confirmation 'september'
 
@@ -19,6 +19,10 @@ FactoryGirl.define do
           Faker::Address.state_abbr + ' ' +
           Faker::Address.zip_code }
       birthday { rand(9000..24000).days.ago }
+    end
+
+    factory :user_admin do
+      admin true
     end
   end
 end

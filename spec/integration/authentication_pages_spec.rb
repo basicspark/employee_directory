@@ -10,18 +10,18 @@ describe "Authentication pages" do
   end
 
   describe "logging in" do
-    let(:user_to_log_in) { create :user, password: 'letmein',
-                                  password_confirmation: 'letmein' }
+    let(:admin_user) { create :user_admin }
+    let(:non_admin_user) { create :user }
 
     context "with blank information" do
-      before { log_in_user(user_to_log_in, email: ' ', password: ' ') }
+      before { log_in_user(admin_user, email: ' ', password: ' ') }
 
       it_should_behave_like 'the failed login page'
     end
 
     context "with incorrect password" do
       before do
-        log_in_user(user_to_log_in, password: 'incorrect')
+        log_in_user(admin_user, password: 'incorrect')
       end
 
       it_should_behave_like 'the failed login page'
@@ -39,13 +39,28 @@ describe "Authentication pages" do
       end
     end
 
-    context "with correct password" do
-      before { log_in_user(user_to_log_in) }
+    context "admin user" do
+      before { log_in_user admin_user }
 
-      it_should_behave_like 'the home page'
+      context "with correct password" do
 
-      let(:path_to_test) { edit_user_path(user_to_log_in) }
-      it_should_behave_like 'all pages with logged in users'
+        it_should_behave_like 'the home page'
+
+        let(:path_to_test) { edit_user_path(admin_user) }
+        it_should_behave_like 'all pages with logged in admin users'
+      end
+    end
+
+    context "non-admin user" do
+      before { log_in_user non_admin_user }
+
+      context "with correct password" do
+
+        it_should_behave_like 'the home page'
+
+        let(:path_to_test) { edit_user_path(non_admin_user) }
+        it_should_behave_like 'all pages with logged in non-admin users'
+      end
     end
   end
 end

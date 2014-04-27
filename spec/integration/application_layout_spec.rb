@@ -26,7 +26,8 @@ describe "Application layout" do
 
   describe "navigation menu" do
     let(:user_to_log_in) { create :user, password: 'letmein',
-                                  password_confirmation: 'letmein' }
+                                  password_confirmation: 'letmein',
+                                  admin: true }
 
     context "when logged out" do
       before { visit root_path }

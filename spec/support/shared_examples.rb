@@ -24,7 +24,7 @@ shared_examples_for 'all pages with logged out users' do
   end
 end
 
-shared_examples_for 'all pages with logged in users' do
+shared_examples_for 'all pages with logged in admin users' do
   it "shows the Home link in the top menu" do
     expect(page).to have_link('Home', href: users_path)
   end
@@ -32,6 +32,45 @@ shared_examples_for 'all pages with logged in users' do
   it "shows the Edit My Profile link in the top menu" do
     expect(page).to have_link('Edit My Profile',
                               href: path_to_test)
+  end
+
+  it "shows the Maintenance dropdown" do
+    expect(page).to have_selector('a', text: 'Maintenance')
+  end
+
+  it "shows the User Maintenance link" do
+    expect(page).to have_link('Users')
+  end
+
+  it "shows the Department Maintenance link" do
+    expect(page).to have_link('Departments', href: departments_path)
+  end
+
+  it "shows the Logout link in the top menu" do
+    expect(page).to have_link('Logout', href: logout_path)
+  end
+end
+
+shared_examples_for 'all pages with logged in non-admin users' do
+  it "shows the Home link in the top menu" do
+    expect(page).to have_link('Home', href: users_path)
+  end
+
+  it "shows the Edit My Profile link in the top menu" do
+    expect(page).to have_link('Edit My Profile',
+                              href: path_to_test)
+  end
+
+  it "does not show the Maintenance dropdown" do
+    expect(page).not_to have_selector('a', text: 'Maintenance')
+  end
+
+  it "does not show the User Maintenance link" do
+    expect(page).not_to have_link('Users')
+  end
+
+  it "does not show the Department Maintenance link" do
+    expect(page).not_to have_link('Departments', href: departments_path)
   end
 
   it "shows the Logout link in the top menu" do

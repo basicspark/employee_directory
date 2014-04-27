@@ -36,7 +36,7 @@ def make_users
                start_date: Chronic::parse('6-1-2013'),
                address: "1123 W. Hummingbird Way\nApt. 304\nChicago, IL 60644",
                birthday: Chronic::parse('5-4-1980'),
-               user_type: 1,
+               admin: true,
                password: 'myfirstapp',
                password_confirmation: 'myfirstapp')
   400.times do |n|
@@ -48,7 +48,7 @@ def make_users
                  start_date: rand(7000).days.ago,
                  address: generate_address,
                  birthday: rand(9000..24000).days.ago,
-                 user_type: 1,
+                 admin: false,
                  password: 'september',
                  password_confirmation: 'september')
   end

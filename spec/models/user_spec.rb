@@ -19,7 +19,8 @@ describe User do
     it { should respond_to(:address) }
     it { should respond_to(:start_date) }
     it { should respond_to(:birthday) }
-    it { should respond_to(:user_type) }
+    it { should_not respond_to(:user_type) }
+    it { should respond_to(:admin) }
     it { should respond_to(:department) }
     it { should respond_to(:password_digest)}
     it { should respond_to(:password) }
@@ -129,24 +130,6 @@ describe User do
       let(:field) { :birthday }
       let(:blank_ok?) { true }
       it_should_behave_like "a record with valid date"
-    end
-
-    it "is invalid without a user_type" do
-      expect(build :user, user_type: nil).not_to be_valid
-    end
-
-    it "does not allow an invalid user_type" do
-      invalid_types = [-1, 3]
-      invalid_types.each do |invalid_type|
-        expect(build :user, user_type: invalid_type).not_to be_valid
-      end
-    end
-
-    it "allows each of the valid user_types" do
-      valid_types = (0..2).to_a
-      valid_types.each do |valid_type|
-        expect(build :user, user_type: valid_type).to be_valid
-      end
     end
 
     it "is invalid without a password" do
