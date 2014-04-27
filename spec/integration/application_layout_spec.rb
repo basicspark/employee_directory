@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe "Application layout" do
+
   describe "navigation and page titles" do
     let(:company_name) { Rails.configuration.company_name }
     let(:application_name) { Rails.configuration.application_name }

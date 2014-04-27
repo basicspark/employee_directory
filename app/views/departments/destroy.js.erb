@@ -1,6 +1,6 @@
+<% if flash.any? %>
+alert('Poop!')
+<% else %>
 $("tr#<%= @department.id %>").after('<tr></tr');
 $("tr#<%= @department.id %>").fadeOut();
-
-
-
-
+<% end %>

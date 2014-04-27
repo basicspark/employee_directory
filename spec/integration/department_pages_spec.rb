@@ -256,8 +256,23 @@ describe "Department pages" do
         expect { @department.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
-      it "no longer shows the deleted department in the lsit" do
+      it "no longer shows the deleted department in the list" do
         expect(page).not_to have_selector('td', text: @department.name)
+      end
+
+      context "a department with assigned users" do
+        before do
+          @user_with_department = create :user
+          @department_to_delete = @user_with_department.department
+          visit departments_path
+          within(:css, "tr##{@department_to_delete.id}") do
+            click_link('Delete')
+          end
+        end
+
+        it "does not delete the department" do
+          expect { @department_to_delete.reload }.not_to raise_error ActiveRecord::RecordNotFound
+        end
       end
     end
   end
