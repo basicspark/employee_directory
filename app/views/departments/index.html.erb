@@ -28,7 +28,8 @@
             <%= render @departments %>
           </tbody>
         </table>
-        <%= will_paginate @departments, renderer: BootstrapPagination::Rails %>
+        <%= will_paginate @departments, renderer: BootstrapPagination::Rails,
+                          class: 'pagination-sm' %>
       </div> <!-- panel body -->
     </div> <!-- panel -->
   </div> <!-- col dept list -->
