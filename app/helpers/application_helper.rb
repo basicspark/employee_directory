@@ -4,9 +4,9 @@ module ApplicationHelper
     # Returns 'active' for navbar active state depending on menu and
     # current Controller and Action
     case menu_item
-      when :home
+      when :directory
         return 'active' if controller_name == 'users' &&
-                           action_name == 'index'
+                           action_name == 'directory'
       when :profile
         return 'active' if controller_name == 'users' &&
                            action_name == 'edit'

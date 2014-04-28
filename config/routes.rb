@@ -3,8 +3,9 @@ Rails.application.routes.draw do
   resources :departments, except: :show
   resources :users
 
-  root 'users#index'
+  root 'users#directory'
 
   match '/login', to: 'sessions#new', via: 'get'
   match '/logout', to: 'sessions#destroy', via: 'delete'
+  match '/directory', to: 'users#directory', via: 'get'
 end

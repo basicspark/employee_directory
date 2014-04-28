@@ -6,7 +6,7 @@ describe "User pages" do
 
     before do
       @user = create :user_with_address_and_birthday
-      visit users_path
+      visit directory_path
     end
 
     it "displays the user list table" do
