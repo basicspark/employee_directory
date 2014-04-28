@@ -44,7 +44,7 @@ describe "Authentication pages" do
 
       context "with correct password" do
 
-        it_should_behave_like 'the home page'
+        it_should_behave_like 'the directory page'
 
         let(:path_to_test) { edit_user_path(admin_user) }
         it_should_behave_like 'all pages with logged in admin users'
@@ -56,7 +56,7 @@ describe "Authentication pages" do
 
       context "with correct password" do
 
-        it_should_behave_like 'the home page'
+        it_should_behave_like 'the directory page'
 
         let(:path_to_test) { edit_user_path(non_admin_user) }
         it_should_behave_like 'all pages with logged in non-admin users'

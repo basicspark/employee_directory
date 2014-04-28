@@ -43,10 +43,10 @@ describe "Application layout" do
     context "when logged in" do
       before { log_in_user(user_to_log_in) }
 
-      context "and clicking the Home link" do
-        before { click_link 'Home' }
+      context "and clicking the Directory link" do
+        before { click_link 'Directory' }
 
-        it_should_behave_like 'the home page'
+        it_should_behave_like 'the directory page'
       end
 
       context "and clicking the Edit My Profile link" do
@@ -54,7 +54,9 @@ describe "Application layout" do
       end
 
       context "and clicking the Users link" do
-        it "shows the users maintenance page"
+        before { click_link 'Users' }
+
+        it_should_behave_like 'the user maintenance page'
       end
 
       context "and clicking the Departments link" do
@@ -73,8 +75,12 @@ describe "Application layout" do
       context "and clicking the Logout link" do
         before { click_link 'Logout' }
 
-        it "returns to the user list screen" do
+        it "returns to the user directory screen" do
           expect(page).to have_selector('th', text: 'Last Name')
+        end
+
+        it "does not have the edit or delete links" do
+          expect(page).not_to have_selector('ul.user-actions')
         end
 
         it_should_behave_like 'all pages with logged out users'

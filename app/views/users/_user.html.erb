@@ -1,6 +1,17 @@
-<tr>
+<tr id="<%= user.id %>">
+  <td>
+    <ul class="user-actions">
+      <li class="user-action-item">
+        <%= link_to 'Edit', edit_user_path(user) %>
+      </li>
+      <li class="user-action-item">
+        <%= link_to 'Delete', user,
+                    data: { confirm: "Are you sure you want to delete '#{user.first_name} #{user.last_name}'?" },
+                    method: :delete, remote: true %>
+
+      </li>
+  </td>
   <td><%= user.last_name %></td>
   <td><%= user.first_name %></td>
   <td><%= user.department.name %></td>
-  <td><%= user.phone %></td>
 </tr>

@@ -25,7 +25,7 @@ class DepartmentsController < ApplicationController
     respond_to do |format|
       if @department.save
         flash[:success] = "Department was successfully created."
-        format.html { redirect_to departments_path }
+        format.html { redirect_to departments_url }
       else
         format.html { render :new }
       end
@@ -37,7 +37,7 @@ class DepartmentsController < ApplicationController
     respond_to do |format|
       if @department.update(department_params)
         flash[:success] = 'Department was successfully updated.'
-        format.html { redirect_to departments_path }
+        format.html { redirect_to departments_url }
       else
         format.html { render :edit }
       end
@@ -81,7 +81,7 @@ class DepartmentsController < ApplicationController
       if @department.users.any?
         flash[:error] = "Can't delete department with assigned users."
         flash.keep(:error)
-        render js: "window.location = '#{departments_path}'"
+        render js: "window.location = '#{departments_url}'"
         return false
       end
     end
