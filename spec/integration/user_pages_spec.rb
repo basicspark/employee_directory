@@ -136,7 +136,10 @@ describe "User pages" do
     context "adding" do
 
       context "clicking the Create New User link" do
-        before { click_link 'Create New User' }
+        before do
+          create :department, name: 'Information Technology'
+          click_link 'Create New User'
+        end
 
         it "displays the Create User form" do
           expect(page).to have_selector('legend', text: 'Create User')
@@ -182,64 +185,94 @@ describe "User pages" do
           expect(find '#user_admin_1').not_to be_checked
         end
 
-    #     context "then submitting with no populated fields" do
-    #       before { click_button 'Create Department' }
-    #
-    #       it "displays the error summary box" do
-    #         expect(page).to have_selector('div.panel.panel-danger',
-    #                                       text: 'Please correct the following:')
-    #       end
-    #
-    #       it "shows the name can't be blank error" do
-    #         expect(page).to have_selector('li', text: "Name can't be blank")
-    #       end
-    #
-    #       it "highlights the Department Name field as being in error" do
-    #         expect(page).to have_selector('div.form-group.has-error',
-    #                                       text: 'Department Name')
-    #       end
-    #     end
-    #
-    #     context "then submitting a valid record" do
-    #       before do
-    #         fill_in 'Department Name', with: 'My New Department'
-    #         fill_in 'Location', with: 'My Location'
-    #         fill_in 'Phone', with: '773-555-1212'
-    #         click_button 'Create Department'
-    #       end
-    #
-    #       it "saves and displays the new department name" do
-    #         expect(page).to have_selector('td', text: 'My New Department')
-    #       end
-    #
-    #       it "saves and displays the new department location" do
-    #         expect(page).to have_selector('td', text: 'My Location')
-    #       end
-    #
-    #       it "saves and displays the new department phone number" do
-    #         expect(page).to have_selector('td', text: '773-555-1212')
-    #       end
-    #
-    #       it "shows the department list" do
-    #         expect(page).to have_selector('h3.panel-title',
-    #                                       text: 'Department Maintenance')
-    #       end
-    #
-    #       it "displays a success message" do
-    #         expect(page).to have_selector('div.alert.alert-dismissable.alert-success',
-    #                                       text: 'Department was successfully created.')
-    #       end
-    #     end
-    #
-    #     context "then clicking the Go Back link" do
-    #       before do
-    #         click_link 'Go Back'
-    #       end
-    #
-    #       it "displays the Department Maintenance list form" do
-    #         expect(page).to have_selector('h3.panel-title', text: 'Department Maintenance')
-    #       end
-    #     end
+        context "then submitting with no populated fields" do
+          before { click_button 'Create User' }
+
+          it "displays the error summary box" do
+            expect(page).to have_selector('div.panel.panel-danger',
+                                          text: 'Please correct the following:')
+          end
+
+          it "shows the name can't be blank error" do
+            expect(page).to have_selector('li', text: "First name can't be blank")
+          end
+
+          it "highlights the First Name field as being in error" do
+            expect(page).to have_selector('div.form-group.has-error',
+                                          text: 'First Name')
+          end
+        end
+
+        context "then submitting a valid record" do
+          before do
+            fill_in 'First Name', with: 'John'
+            fill_in 'Last Name', with: 'Doe'
+            select 'Information Technology', from: 'Department'
+            fill_in 'Phone Number', with: '312-555-1234'
+            fill_in 'Email', with: 'jdoe@myurl.com'
+            fill_in 'Password', with: 'foobar'
+            fill_in 'Confirm Password', with: 'foobar'
+            fill_in 'Address', with: "123 Somewhere St.\nApt. 123\nAnytown, CA 90101"
+            fill_in 'Start Date', with: '2001-03-01'
+            fill_in 'Birthday', with: '1976-06-01'
+            find(:css, "#user_admin_0[value='0']").set(true)
+            click_button 'Create User'
+          end
+
+          it "saves and displays the new user name" do
+            expect(page).to have_selector('legend', text: 'John Doe' )
+          end
+
+          it "saves and displays the new user department" do
+            expect(page).to have_selector('p.form-control-static',
+                                          text: 'Information Technology')
+          end
+
+          it "saves and displays the new user phone number" do
+            expect(page).to have_selector('p.form-control-static',
+                                          text: '312-555-1234')
+          end
+
+          it "saves and displays the new user email" do
+            expect(page).to have_selector('p.form-control-static',
+                                          text: 'jdoe@myurl.com')
+          end
+
+          it "saves and displays the new user address" do
+            expect(page).to have_selector('p.form-control-static',
+                                          text: '123 Somewhere St.' )
+          end
+
+          it "saves and displays the new user start_date" do
+            expect(page).to have_selector('p.form-control-static',
+                                          text: '3/1/2001' )
+          end
+
+          it "saves and displays the new user birthday" do
+            expect(page).to have_selector('p.form-control-static',
+                                          text: '6/1/1976')
+          end
+
+          it "saves and displays the administrator option" do
+            expect(page).to have_selector('p.form-control-static',
+                                          text: 'No')
+          end
+
+          it "displays a success message" do
+            expect(page).to have_selector('div.alert.alert-dismissable.alert-success',
+                                          text: 'User was successfully created.')
+          end
+        end
+
+        context "then clicking the Go Back link" do
+          before do
+            click_link 'Go Back'
+          end
+
+          it "displays the User Maintenance list form" do
+            expect(page).to have_selector('h3.panel-title', text: 'User Maintenance')
+          end
+        end
       end
     end
     #

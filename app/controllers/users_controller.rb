@@ -31,7 +31,8 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        flash[:success] = 'User was successfully created.'
+        format.html { redirect_to @user }
       else
         format.html { render :new }
       end
@@ -68,7 +69,16 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :department_id, :phone, :email, :password, :password_confirmation, :address, :start_date, :birthday)
+      if current_user.admin?
+        # Allow admins more access
+        params.require(:user).permit(:first_name, :last_name, :department_id,
+                                     :phone, :email, :password, :password_confirmation,
+                                     :address, :start_date, :birthday, :admin)
+      else
+        # Allow general users less access
+        params.require(:user).permit(:phone, :email, :password, :password_confirmation,
+                                     :address)
+      end
     end
 
     # Require a login for some actions
