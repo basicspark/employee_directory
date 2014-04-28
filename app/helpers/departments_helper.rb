@@ -1,5 +1,6 @@
 module DepartmentsHelper
-  def form_legend
+
+  def department_form_legend
     # Return an appropriate legend name depending on the current action
     case action_name
       when 'new', 'create'

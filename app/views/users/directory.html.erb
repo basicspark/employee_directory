@@ -16,7 +16,7 @@
           </tr>
           </thead>
           <tbody data-link="row">
-          <%= render @users %>
+          <%= render partial: 'directory_entry', collection: @users, as: :directory_entry %>
           </tbody>
         </table>
         <%= will_paginate @users, renderer: BootstrapPagination::Rails,

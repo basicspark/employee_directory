@@ -99,16 +99,34 @@ shared_examples_for 'the failed login page' do
   end
 end
 
-shared_examples_for 'the directory page' do
+shared_examples_for 'a list of users' do
   it "displays the user list screen" do
     expect(page).to have_selector('th', text: 'Last Name')
   end
+end
+
+shared_examples_for 'the directory page' do
+  it_should_behave_like 'a list of users'
 
   it "shows the Directory link as active" do
     expect(page).to have_selector('li.active', text: 'Directory')
   end
 
-  it "does not have the edit links"
+  it "does not have the edit or delete links" do
+    expect(page).not_to have_selector('ul.user-actions')
+  end
+end
+
+shared_examples_for 'the user maintenance page' do
+  it_should_behave_like 'a list of users'
+
+  it "shows the Maintenance link as active" do
+    expect(page).to have_selector('li.active', text: 'Maintenance')
+  end
+
+  it "has the edit and delete links" do
+    expect(page).to have_selector('ul.user-actions')
+  end
 end
 
 

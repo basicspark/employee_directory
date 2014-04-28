@@ -1,49 +1,61 @@
-<%= form_for(@user) do |f| %>
-  <% if @user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
-
-      <ul>
-      <% @user.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+<% if @user.errors.any? %>
+  <!-- ERROR PANEL -->
+  <div class="row">
+    <div class="col-xs-12 column">
+      <div class="panel panel-danger">
+        <div class="panel-heading">
+          <h3 class="panel-title">Please correct the following:</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <% @user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
     </div>
+  </div>  <!-- row error panel -->
+<% end %>
+
+<div class="well">
+  <%= bootstrap_form_for(@user, layout: :horizontal,
+                         label_col: 'col-lg-2', control_col: 'col-lg-10') do |f| %>
+    <legend><%= user_form_legend %></legend>
+
+    <%= f.text_field :first_name, placeholder: 'First Name',
+                     label: 'First Name', class: 'set-focus' %>
+
+    <%= f.text_field :last_name, placeholder: 'Last Name',
+                     label: 'Last Name' %>
+
+    <%= f.collection_select :department_id, Department.all,
+                            :id, :name, prompt: true %>
+
+    <%= f.phone_field :phone, class: 'mask-phone', placeholder: 'xxx-xxx-xxxx',
+                      label: 'Phone Number' %>
+
+    <%= f.email_field :email, placeholder: 'Email' %>
+
+    <%= f.password_field :password, placeholder: 'Password' %>
+
+    <%= f.password_field :password_confirmation, placeholder: 'Confirm Password',
+                         label: 'Confirm Password' %>
+
+    <%= f.text_area :address, rows: 5, placeholder: 'Mailing Address' %>
+
+    <%= f.date_field :start_date %>
+
+    <%= f.date_field :birthday %>
+
+    <%= f.form_group :admin, label: { text: "Administrator?" } do %>
+      <%= f.radio_button :admin, 0, label: "No", checked: true %>
+      <%= f.radio_button :admin, 1, label: "Yes" %>
+    <% end %>
+
+    <%= f.form_group do %>
+      <%= f.submit class: 'btn btn-success' %>
+    <% end %>
   <% end %>
 
-  <div class="field">
-    <%= f.label :first_name %><br>
-    <%= f.text_field :first_name %>
-  </div>
-  <div class="field">
-    <%= f.label :last_name %><br>
-    <%= f.text_field :last_name %>
-  </div>
-  <div class="field">
-    <%= f.label :department_id %><br>
-    <%= f.number_field :department_id %>
-  </div>
-  <div class="field">
-    <%= f.label :phone %><br>
-    <%= f.text_field :phone %>
-  </div>
-  <div class="field">
-    <%= f.label :email %><br>
-    <%= f.text_field :email %>
-  </div>
-  <div class="field">
-    <%= f.label :address %><br>
-    <%= f.text_field :address %>
-  </div>
-  <div class="field">
-    <%= f.label :start_date %><br>
-    <%= f.date_select :start_date %>
-  </div>
-  <div class="field">
-    <%= f.label :birthday %><br>
-    <%= f.date_select :birthday %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div> <!-- well -->

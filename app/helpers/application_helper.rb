@@ -11,8 +11,10 @@ module ApplicationHelper
         return 'active' if controller_name == 'users' &&
                            action_name == 'edit'
       when :maintenance
-        return 'active' if controller_name == 'departments' &&
-                           action_name == 'index'
+        return 'active' if ((controller_name == 'departments' ||
+                             controller_name == 'users') &&
+                          action_name == 'index')
+
       when :login
         if controller_name == 'sessions' &&
            (action_name == 'new' || action_name == 'create')
