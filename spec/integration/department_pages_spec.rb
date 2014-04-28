@@ -301,7 +301,7 @@ describe "Department pages" do
         before { post departments_path }
 
         it "redirects to the login path" do
-          expect(response).to redirect_to(login_path)
+          expect(response).to redirect_to(login_url)
         end
       end
 
@@ -321,7 +321,7 @@ describe "Department pages" do
         before { patch department_path(existing_department) }
 
         it "redirects to the login path" do
-          expect(response).to redirect_to(login_path)
+          expect(response).to redirect_to(login_url)
         end
       end
 
@@ -329,7 +329,7 @@ describe "Department pages" do
         before { delete department_path(existing_department) }
 
         it "redirects to the login path" do
-          expect(response).to redirect_to(login_path)
+          expect(response).to redirect_to(login_url)
         end
 
         it "doesn't delete the record" do
