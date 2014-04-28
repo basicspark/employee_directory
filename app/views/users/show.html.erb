@@ -1,44 +1,48 @@
-<p id="notice"><%= notice %></p>
+<!-- ********************* MAIN CONTENT ********************* -->
+<div class="row clearfix">
 
-<p>
-  <strong>First name:</strong>
-  <%= @user.first_name %>
-</p>
+  <div class="col-md-8 column">
 
-<p>
-  <strong>Last name:</strong>
-  <%= @user.last_name %>
-</p>
+    <%= render 'shared/app_flash' %>
 
-<p>
-  <strong>Department:</strong>
-  <%= @user.department_id %>
-</p>
+    <div class="well">
+      <div class="row">
+        <div class="col-md-4">
+          <p>Coming Soon</p>
+        </div>
+        <div class="col-md-8">
+          <%= bootstrap_form_for(@user, layout: :horizontal,
+                                 label_col: 'col-lg-2', control_col: 'col-lg-10') do |f| %>
+            <legend><%= "#{@user.first_name} #{@user.last_name}" %></legend>
 
-<p>
-  <strong>Phone:</strong>
-  <%= @user.phone %>
-</p>
+            <%= f.static_control nil, label: 'Department' do %>
+              <%= @user.department.name %>
+            <% end %>
 
-<p>
-  <strong>Email:</strong>
-  <%= @user.email %>
-</p>
+            <%= f.static_control :phone %>
 
-<p>
-  <strong>Address:</strong>
-  <%= @user.address %>
-</p>
+            <%= f.static_control :email %>
 
-<p>
-  <strong>Start date:</strong>
-  <%= @user.start_date %>
-</p>
+            <%= f.static_control :address %>
 
-<p>
-  <strong>Birthday:</strong>
-  <%= @user.birthday %>
-</p>
+            <%= f.static_control nil, label: 'Start Date' do %>
+              <%= @user.start_date.strftime("%-m/%-d/%Y") %>
+            <% end %>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+            <%= f.static_control nil, label: 'Birthday' do %>
+              <%= @user.birthday.strftime("%-m/%-d/%Y") %>
+            <% end %>
+
+            <%= f.static_control nil, label: 'Administrator?' do %>
+              <%= @user.admin? ? 'Yes' : 'No' %>
+            <% end %>
+          <% end %>
+        </div>
+      </div> <!-- row panel -->
+    </div> <!-- well -->
+
+    <%= link_to 'Go Back  ', users_path %>
+
+  </div> <!-- col user form -->
+
+</div>  <!-- row main content ************************************** -->

@@ -44,13 +44,13 @@
 
     <%= f.text_area :address, rows: 5, placeholder: 'Mailing Address' %>
 
-    <%= f.date_field :start_date %>
+    <%= f.date_field :start_date, label: 'Start Date' %>
 
     <%= f.date_field :birthday %>
 
     <%= f.form_group :admin, label: { text: "Administrator?" } do %>
-      <%= f.radio_button :admin, 0, label: "No", checked: true %>
-      <%= f.radio_button :admin, 1, label: "Yes" %>
+      <%= f.radio_button :admin, 0, label: "No", checked: !@user.admin? %>
+      <%= f.radio_button :admin, 1, label: "Yes", checked: @user.admin? %>
     <% end %>
 
     <%= f.form_group do %>
