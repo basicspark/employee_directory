@@ -25,8 +25,8 @@ shared_examples_for 'all pages with logged out users' do
 end
 
 shared_examples_for 'all pages with logged in admin users' do
-  it "shows the Home link in the top menu" do
-    expect(page).to have_link('Home', href: users_path)
+  it "shows the Directory link in the top menu" do
+    expect(page).to have_link('Directory', href: directory_path)
   end
 
   it "shows the Edit My Profile link in the top menu" do
@@ -52,8 +52,8 @@ shared_examples_for 'all pages with logged in admin users' do
 end
 
 shared_examples_for 'all pages with logged in non-admin users' do
-  it "shows the Home link in the top menu" do
-    expect(page).to have_link('Home', href: users_path)
+  it "shows the Directory link in the top menu" do
+    expect(page).to have_link('Directory', href: directory_path)
   end
 
   it "shows the Edit My Profile link in the top menu" do
@@ -99,13 +99,33 @@ shared_examples_for 'the failed login page' do
   end
 end
 
-shared_examples_for 'the home page' do
+shared_examples_for 'a list of users' do
   it "displays the user list screen" do
     expect(page).to have_selector('th', text: 'Last Name')
   end
+end
 
-  it "shows the Home link as active" do
-    expect(page).to have_selector('li.active', text: 'Home')
+shared_examples_for 'the directory page' do
+  it_should_behave_like 'a list of users'
+
+  it "shows the Directory link as active" do
+    expect(page).to have_selector('li.active', text: 'Directory')
+  end
+
+  it "does not have the edit or delete links" do
+    expect(page).not_to have_selector('ul.user-actions')
+  end
+end
+
+shared_examples_for 'the user maintenance page' do
+  it_should_behave_like 'a list of users'
+
+  it "shows the Maintenance link as active" do
+    expect(page).to have_selector('li.active', text: 'Maintenance')
+  end
+
+  it "has the edit and delete links" do
+    expect(page).to have_selector('ul.user-actions')
   end
 end
 

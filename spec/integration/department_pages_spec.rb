@@ -36,8 +36,12 @@ describe "Department pages" do
     end
 
     describe "pagination" do
-      before(:all) { 20.times { create :department } }
-      after(:all) { Department.delete_all }
+      before do
+        20.times { create :department }
+        visit departments_path
+      end
+
+      after { Department.delete_all }
 
       it "contains the small pagination selector" do
         expect(page).to have_selector('ul.pagination.pagination-sm')
