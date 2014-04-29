@@ -12,7 +12,7 @@
         </div>
         <div class="col-md-8">
           <%= bootstrap_form_for(@user, layout: :horizontal,
-                                 label_col: 'col-lg-2', control_col: 'col-lg-10') do |f| %>
+                                 label_col: 'col-lg-3', control_col: 'col-lg-9') do |f| %>
             <legend><%= "#{@user.first_name} #{@user.last_name}" %></legend>
 
             <%= f.static_control nil, label: 'Department' do %>
