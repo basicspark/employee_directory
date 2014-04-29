@@ -617,16 +617,16 @@ describe "User pages" do
       context "and accessing the edit user path" do
         before { get edit_user_path(existing_user) }
 
-        it "redirects to the root url" do
-          expect(response).to redirect_to(root_url)
+        it "redirects to the current user's url" do
+          expect(response).to redirect_to(edit_user_url non_admin_user)
         end
       end
 
       context "and patching to the user path" do
         before { patch user_path(existing_user) }
 
-        it "redirects to the root url" do
-          expect(response).to redirect_to(root_url)
+        it "redirects to the current user's url" do
+          expect(response).to redirect_to(edit_user_url non_admin_user)
         end
       end
 
@@ -640,6 +640,150 @@ describe "User pages" do
         it "doesn't delete the record" do
           expect { existing_user.reload }.not_to raise_error
         end
+      end
+    end
+  end
+
+  describe "profile" do
+    let(:edit_profile_user) { create :user_with_address_and_birthday }
+    let(:other_user) { create :user_with_address_and_birthday }
+
+    context "when not logged in" do
+      before do
+        visit edit_user_path(edit_profile_user)
+      end
+
+      it_should_behave_like 'the login page'
+    end
+
+    context "when logged in as a non-admin user" do
+      before do
+        log_in_user edit_profile_user
+        click_link 'Edit My Profile'
+      end
+
+      it "does not allow editing first_name" do
+        expect(find('#user_first_name')[:disabled]).to be_true
+      end
+
+      it "does not allow editing last_name" do
+        expect(find('#user_last_name')[:disabled]).to be_true
+      end
+
+      it "does not allow editing department" do
+        expect(find('#user_department_id')[:disabled]).to be_true
+      end
+
+      it "does not allow editing start_date" do
+        expect(find('#user_start_date')[:disabled]).to be_true
+      end
+
+      it "does not allow editing birthday" do
+        expect(find('#user_birthday')[:disabled]).to be_true
+      end
+
+      it "displays only the birthday month and day" do
+        expect(find('#user_birthday').value).to eq(edit_profile_user.birthday.strftime("%-m/%-d"))
+      end
+
+      it "allows editing phone number" do
+        expect(find('#user_phone')[:disabled]).not_to be_true
+      end
+
+      it "allows editing email" do
+        expect(find('#user_email')[:disabled]).not_to be_true
+      end
+
+      it "allows editing address" do
+        expect(find('#user_address')[:disabled]).not_to be_true
+      end
+
+      it "allows editing password" do
+        expect(find('#user_password')[:disabled]).not_to be_true
+      end
+
+      it "allows editing password confirmation" do
+        expect(find('#user_password_confirmation')[:disabled]).not_to be_true
+      end
+
+      it "does not show the admin option" do
+        expect(page).not_to have_selector('input#user_admin_0')
+      end
+
+      context "when attempting to edit another person's profile" do
+        before { log_in_user edit_profile_user, no_capybara: true }
+
+        context "sending get to edit" do
+          before { get edit_user_path other_user }
+
+          it "redirects to the correct user's profile" do
+            expect(response).to redirect_to(edit_user_url edit_profile_user)
+          end
+        end
+
+        context "sending patch to update" do
+          before { patch user_path other_user }
+
+          it "redirects to the correct user's profile" do
+            expect(response).to redirect_to(edit_user_url edit_profile_user)
+          end
+        end
+      end
+    end
+
+    context "when logged in as an admin user" do
+      before do
+        admin_user.update_attribute(:birthday, '1976-06-01')
+        log_in_user admin_user
+        click_link 'Edit My Profile'
+      end
+
+      it "allows editing first_name" do
+        expect(find('#user_first_name')[:disabled]).not_to be_true
+      end
+
+      it "allows editing last_name" do
+        expect(find('#user_last_name')[:disabled]).not_to be_true
+      end
+
+      it "allows editing department" do
+        expect(find('#user_department_id')[:disabled]).not_to be_true
+      end
+
+      it "allows editing start_date" do
+        expect(find('#user_start_date')[:disabled]).not_to be_true
+      end
+
+      it "allows editing birthday" do
+        expect(find('#user_birthday')[:disabled]).not_to be_true
+      end
+
+      it "displays the full birthday" do
+        expect(find('#user_birthday').value).to eq(admin_user.birthday.strftime("%Y-%m-%d"))
+      end
+
+      it "allows editing phone number" do
+        expect(find('#user_phone')[:disabled]).not_to be_true
+      end
+
+      it "allows editing email" do
+        expect(find('#user_email')[:disabled]).not_to be_true
+      end
+
+      it "allows editing address" do
+        expect(find('#user_address')[:disabled]).not_to be_true
+      end
+
+      it "allows editing password" do
+        expect(find('#user_password')[:disabled]).not_to be_true
+      end
+
+      it "allows editing password confirmation" do
+        expect(find('#user_password_confirmation')[:disabled]).not_to be_true
+      end
+
+      it "allows editing admin option" do
+        expect(page).to have_selector('input#user_admin_0')
       end
     end
   end

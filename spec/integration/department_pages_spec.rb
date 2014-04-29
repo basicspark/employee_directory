@@ -257,7 +257,7 @@ describe "Department pages" do
       end
 
       it "deletes the correct department from the database" do
-        expect { @department.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { @department.reload }.to raise_error
       end
 
       it "no longer shows the deleted department in the list" do
@@ -275,7 +275,7 @@ describe "Department pages" do
         end
 
         it "does not delete the department" do
-          expect { @department_to_delete.reload }.not_to raise_error ActiveRecord::RecordNotFound
+          expect { @department_to_delete.reload }.not_to raise_error
         end
       end
     end

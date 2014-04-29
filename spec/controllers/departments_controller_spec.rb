@@ -24,7 +24,7 @@ describe DepartmentsController do
 
       it "deletes the correct department" do
         xhr :delete, :destroy, id: @department.id
-        expect { @department.reload }.to raise_error ActiveRecord::RecordNotFound
+        expect { @department.reload }.to raise_error
       end
     end
 
@@ -43,7 +43,7 @@ describe DepartmentsController do
 
       it "does not delete the department" do
         xhr :delete, :destroy, id: @department.id
-        expect { @department.reload }.not_to raise_error ActiveRecord::RecordNotFound
+        expect { @department.reload }.not_to raise_error
       end
     end
   end
