@@ -710,6 +710,33 @@ describe "User pages" do
         expect(page).not_to have_selector('input#user_admin_0')
       end
 
+      context "performing the update" do
+        before do
+          fill_in 'Phone', with: '212-212-2121'
+          fill_in 'Address', with: 'My New Address'
+          click_button 'Update User'
+          edit_profile_user.reload
+        end
+
+        it "displays the user show screen" do
+          expect(page).to have_selector('legend',
+            text: "#{edit_profile_user.first_name} #{edit_profile_user.last_name}")
+        end
+
+        it "displays the success message" do
+          expect(page).to have_selector('div.alert.alert-dismissable.alert-success',
+                                        text: 'User was successfully updated.')
+        end
+
+        it "saves the updated phone to the database" do
+          expect(edit_profile_user.phone).to eq('212-212-2121')
+        end
+
+        it "saves the updates address to the database" do
+          expect(edit_profile_user.address).to eq('My New Address')
+        end
+      end
+
       context "when attempting to edit another person's profile" do
         before { log_in_user edit_profile_user, no_capybara: true }
 
