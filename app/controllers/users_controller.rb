@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
   before_action :logged_in_user, except: [:directory]
-  before_action :admin_user, except: [:directory, :edit, :update]
+  before_action :admin_user, except: [:directory, :edit, :update, :show]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :edit_self_only, only: [:edit, :update]
+  before_action :edit_self_only, only: [:edit, :update, :show]
 
   # GET /users
   def index
@@ -100,7 +100,11 @@ class UsersController < ApplicationController
       unless current_user.admin?
         if current_user != User.find(params[:id])
           # Trying to edit someone else, so redirect to their own record
-          redirect_to edit_user_url(current_user)
+          if action_name == 'update' || action_name == 'edit'
+            redirect_to edit_user_url(current_user)
+          else
+            redirect_to user_url(current_user)
+          end
         end
       end
     end
