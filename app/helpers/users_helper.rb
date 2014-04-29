@@ -12,4 +12,9 @@ module UsersHelper
     end
   end
 
+  def non_admin_disable
+    # Return true for disabled flag on certain fields non-admins can't edit
+    !current_user.admin?
+  end
+
 end

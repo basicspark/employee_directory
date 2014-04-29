@@ -13,7 +13,8 @@ class User < ActiveRecord::Base
   validates :address, length: { maximum: 200 }
   validates :start_date, date: true
   validates :birthday, date: true, allow_blank: true
-  validates :password, length: { minimum: 6 }
+  validates :password, length: { minimum: 6 }, on: :create
+  validates :password, length: { minimum: 6 }, on: :update, if: :password
 
   has_secure_password
   self.per_page = 15

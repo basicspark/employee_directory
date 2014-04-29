@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
   before_action :logged_in_user, except: [:directory]
-  before_action :admin_user, except: [:directory]
+  before_action :admin_user, except: [:directory, :edit, :update]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :edit_self_only, only: [:edit, :update]
 
   # GET /users
   def index
@@ -40,11 +41,11 @@ class UsersController < ApplicationController
   end
 
   # PATCH/PUT /users/1
-  # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        flash[:success] = 'User was successfully updated.'
+        format.html { redirect_to @user }
       else
         format.html { render :edit }
       end
@@ -52,7 +53,6 @@ class UsersController < ApplicationController
   end
 
   # DELETE /users/1
-  # DELETE /users/1.json
   def destroy
     @user.destroy
     respond_to do |format|
@@ -93,5 +93,15 @@ class UsersController < ApplicationController
 
     def get_users
       @users = User.paginate(page: params[:page])
+    end
+
+    def edit_self_only
+      # Unless the user is an admin, they may only edit their own record
+      unless current_user.admin?
+        if current_user != User.find(params[:id])
+          # Trying to edit someone else, so redirect to their own record
+          redirect_to edit_user_url(current_user)
+        end
+      end
     end
 end
