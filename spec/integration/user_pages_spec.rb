@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe "User pages" do
+  before do
+    create :department, name: 'Information Technology'
+    create :department, name: 'New Department'
+  end
+
   let(:admin_user) { create :user_admin }
   let(:non_admin_user) { create :user }
 
@@ -129,7 +134,7 @@ describe "User pages" do
   describe "maintenance" do
     before do
       log_in_user admin_user
-      @user = create :user
+      @user = create :user_with_address_and_birthday
       visit users_path
     end
 
@@ -137,7 +142,6 @@ describe "User pages" do
 
       context "clicking the Create New User link" do
         before do
-          create :department, name: 'Information Technology'
           click_link 'Create New User'
         end
 
@@ -275,142 +279,251 @@ describe "User pages" do
         end
       end
     end
-    #
-    # context "editing" do
-    #
-    #   context "clicking the edit link in table" do
-    #     before do
-    #       within(:css, "tr##{@department.id}") { click_link 'Edit' }
-    #     end
-    #
-    #     it "displays the Edit Department form" do
-    #       expect(page).to have_selector('legend', text: 'Edit Department')
-    #     end
-    #
-    #     it "displays the correct Department Name field" do
-    #       expect(find_field('department_name').value).to eq(@department.name)
-    #     end
-    #
-    #     it "displays the correct Location field" do
-    #       expect(find_field('department_location').value).to eq(@department.location)
-    #     end
-    #
-    #     it "displays the correct Phone field" do
-    #       expect(find_field('department_phone').value).to eq(@department.phone)
-    #     end
-    #
-    #     context "then submitting with a blanked out Department Name" do
-    #       before do
-    #         fill_in 'Department Name', with: ' '
-    #         click_button 'Update Department'
-    #       end
-    #
-    #       it "displays the error summary box" do
-    #         expect(page).to have_selector('div.panel.panel-danger',
-    #                                       text: 'Please correct the following:')
-    #       end
-    #
-    #       it "shows the name can't be blank error" do
-    #         expect(page).to have_selector('li', text: "Name can't be blank")
-    #       end
-    #
-    #       it "highlights the Department Name field as being in error" do
-    #         expect(page).to have_selector('div.form-group.has-error',
-    #                                       text: 'Department Name')
-    #       end
-    #     end
-    #
-    #     context "then changing all of the fields" do
-    #       before do
-    #         fill_in 'Department Name', with: 'New Department Name'
-    #         fill_in 'Location', with: 'New Location'
-    #         fill_in 'Phone', with: '888-888-7777'
-    #         click_button 'Update Department'
-    #         @department.reload
-    #       end
-    #
-    #       it "saves the updated name to the database" do
-    #         expect(@department.name).to eq('New Department Name')
-    #       end
-    #
-    #       it "saves the updated location to the database" do
-    #         expect(@department.location).to eq('New Location')
-    #       end
-    #
-    #       it "saves the updated phone number to the database" do
-    #         expect(@department.phone).to eq('888-888-7777')
-    #       end
-    #
-    #       it "returns to the department list page" do
-    #         expect(page).to have_selector('h3.panel-title', text: 'Department Maintenance')
-    #       end
-    #
-    #       it "displays a success message" do
-    #         expect(page).to have_selector('div.alert.alert-dismissable.alert-success',
-    #                                       text: 'Department was successfully updated.')
-    #       end
-    #
-    #       it "displays the updated department name on the list screen" do
-    #         within(:css, "tr##{@department.id}") do
-    #           expect(page).to have_selector('td', text: 'New Department Name')
-    #         end
-    #       end
-    #
-    #       it "displays the updated department location on the list screen" do
-    #         within(:css, "tr##{@department.id}") do
-    #           expect(page).to have_selector('td', text: 'New Location')
-    #         end
-    #       end
-    #
-    #       it "displays the updates department phone on the list screen" do
-    #         within(:css, "tr##{@department.id}") do
-    #           expect(page).to have_selector('td', text: '888-888-7777')
-    #         end
-    #       end
-    #     end
-    #
-    #     context "then clicking the Go Back link" do
-    #       before do
-    #         click_link 'Go Back'
-    #       end
-    #
-    #       it "displays the Department Maintenance list form" do
-    #         expect(page).to have_selector('h3.panel-title', text: 'Department Maintenance')
-    #       end
-    #     end
-    #   end
-    # end
-    #
-    # context "deleting" do
-    #   before do
-    #     within(:css, "tr##{@department.id}") do
-    #       click_link('Delete')
-    #     end
-    #   end
-    #
-    #   it "deletes the correct department from the database" do
-    #     expect { @department.reload }.to raise_error(ActiveRecord::RecordNotFound)
-    #   end
-    #
-    #   it "no longer shows the deleted department in the list" do
-    #     expect(page).not_to have_selector('td', text: @department.name)
-    #   end
-    #
-    #   context "a department with assigned users" do
-    #     before do
-    #       @user_with_department = create :user
-    #       @department_to_delete = @user_with_department.department
-    #       visit departments_path
-    #       within(:css, "tr##{@department_to_delete.id}") do
-    #         click_link('Delete')
-    #       end
-    #     end
-    #
-    #     it "does not delete the department" do
-    #       expect { @department_to_delete.reload }.not_to raise_error ActiveRecord::RecordNotFound
-    #     end
-    #   end
-    # end
+
+    context "editing" do
+
+      context "clicking the edit link in table" do
+        before do
+          within(:css, "tr##{@user.id}") { click_link 'Edit' }
+        end
+
+        it "displays the Edit User form" do
+          expect(page).to have_selector('legend', text: 'Edit User')
+        end
+
+        it "displays the correct First Name field" do
+          expect(find_field('user_first_name').value).to eq(@user.first_name)
+        end
+
+        it "displays the correct Last Name field" do
+          expect(find_field('user_last_name').value).to eq(@user.last_name)
+        end
+
+        it "displays the correct Department field" do
+          expect(page).to have_select('user_department_id', selected: @user.department.name)
+        end
+
+        it "displays the correct Phone Number field" do
+          expect(find_field('user_phone').value).to eq(@user.phone)
+        end
+
+        it "displays the correct Email field" do
+          expect(find_field('user_email').value).to eq(@user.email)
+        end
+
+        it "displays the correct Address field" do
+          expect(find_field('user_address').value).to eq(@user.address)
+        end
+
+        it "displays the correct Start Date field" do
+          expect(find_field('user_start_date').value).to eq(@user.start_date.strftime("%Y-%m-%d"))
+        end
+
+        it "displays the correct Birthday field" do
+          expect(find_field('user_birthday').value).to eq(@user.birthday.strftime("%Y-%m-%d"))
+        end
+
+        it "displays the correct Admin option" do
+          if @user.admin?
+            expect(find '#user_admin_1').to be_checked
+          else
+            expect(find '#user_admin_0').to be_checked
+          end
+        end
+
+        context "then submitting with a blanked out First Name" do
+          before do
+            fill_in 'First Name', with: ' '
+            click_button 'Update User'
+          end
+
+          it "displays the error summary box" do
+            expect(page).to have_selector('div.panel.panel-danger',
+                                          text: 'Please correct the following:')
+          end
+
+          it "shows the first_name can't be blank error" do
+            expect(page).to have_selector('li', text: "First name can't be blank")
+          end
+
+          it "highlights the First Name field as being in error" do
+            expect(page).to have_selector('div.form-group.has-error',
+                                          text: 'First Name')
+          end
+        end
+
+        context "then changing all of the fields" do
+          before do
+            @previous_password = @user.password_digest
+            fill_in 'First Name', with: 'NewFirst'
+            fill_in 'Last Name', with: 'NewLast'
+            select 'New Department', from: 'Department'
+            fill_in 'Phone Number', with: '212-777-4321'
+            fill_in 'Email', with: 'new@email.com'
+            fill_in 'Password', with: 'newpass'
+            fill_in 'Confirm Password', with: 'newpass'
+            fill_in 'Address', with: "NewAddress"
+            fill_in 'Start Date', with: '1999-09-09'
+            fill_in 'Birthday', with: '1988-08-08'
+            find(:css, "#user_admin_1[value='1']").set(true)
+            click_button 'Update User'
+            @user.reload
+          end
+
+          it "saves the updated first_name to the database" do
+            expect(@user.first_name).to eq('NewFirst')
+          end
+
+          it "saves the updated last_name to the database" do
+            expect(@user.last_name).to eq('NewLast')
+          end
+
+          it "saves the updated department to the database" do
+            expect(@user.department.name).to eq('New Department')
+          end
+
+          it "saves the updated phone to the database" do
+            expect(@user.phone).to eq('212-777-4321')
+          end
+
+          it "saves the updated email to the database" do
+            expect(@user.email).to eq('new@email.com')
+          end
+
+          it "saves the updated address to the database" do
+            expect(@user.address).to eq('NewAddress')
+          end
+
+          it "saves the updated start_date to the database" do
+            expect(@user.start_date.strftime('%Y-%m-%d')).to eq('1999-09-09')
+          end
+
+          it "saves the updated birthday to the database" do
+            expect(@user.birthday.strftime('%Y-%m-%d')).to eq('1988-08-08')
+          end
+
+          it "saves the updated admin selection to the database" do
+            expect(@user.admin).to be_true
+          end
+
+          it "saves the updated password to the database" do
+            expect(@user.password_digest).not_to eq(@previous_password)
+          end
+
+          it "returns to the user show page" do
+            expect(page).to have_selector('legend', text: 'NewFirst NewLast' )
+          end
+
+          it "displays a success message" do
+            expect(page).to have_selector('div.alert.alert-dismissable.alert-success',
+                                          text: 'User was successfully updated.')
+          end
+        end
+
+        context "then changing only the name and not the password" do
+          before do
+            fill_in 'First Name', with: 'MyNewFirst'
+            click_button 'Update User'
+            @user.reload
+          end
+
+          it "saves the updated first_name to the database" do
+            expect(@user.first_name).to eq('MyNewFirst')
+          end
+
+          it "displays a success message" do
+            expect(page).to have_selector('div.alert.alert-dismissable.alert-success',
+                                          text: 'User was successfully updated.')
+          end
+        end
+
+        context "then changing only the password without the confirmation" do
+          before do
+            @previous_password = @user.password_digest
+
+          end
+
+          context "without providing the confirmation" do
+            before do
+              fill_in 'Password', with: 'Pass'
+              click_button 'Update User'
+              @user.reload
+            end
+
+            it "does not update the password in the database" do
+              expect(@user.password_digest).to eq(@previous_password)
+            end
+
+            it "displays the error summary box" do
+              expect(page).to have_selector('div.panel.panel-danger',
+                                            text: 'Please correct the following:')
+            end
+
+            it "shows the password too short error" do
+              expect(page).to have_selector('li', text: "Password is too short")
+            end
+
+            it "shows the password doesn't match confirmation error" do
+              expect(page).to have_selector('li', text: "Password confirmation doesn't match")
+            end
+
+            it "highlights the Password field as being in error" do
+              expect(page).to have_selector('div.form-group.has-error',
+                                            text: 'Password')
+            end
+          end
+
+          context "with providing the confirmation" do
+            before do
+              fill_in 'Password', with: 'MyNewPass'
+              fill_in 'Confirm Password', with: 'MyNewPass'
+              click_button 'Update User'
+              @user.reload
+            end
+
+            it "updates the password in the database" do
+              expect(@user.password_digest).not_to eq(@previous_password)
+            end
+
+            it "returns to the user show page" do
+              expect(page).to have_selector('legend',
+                                  text: "#{@user.first_name} #{@user.last_name}" )
+            end
+
+            it "displays a success message" do
+              expect(page).to have_selector('div.alert.alert-dismissable.alert-success',
+                                            text: 'User was successfully updated.')
+            end
+          end
+        end
+
+        context "then clicking the Go Back link" do
+          before do
+            click_link 'Go Back'
+          end
+
+          it "displays the User Maintenance list form" do
+            expect(page).to have_selector('h3.panel-title', text: 'User Maintenance')
+          end
+        end
+      end
+    end
+
+    context "deleting" do
+      before do
+        within(:css, "tr##{@user.id}") do
+          click_link('Delete')
+        end
+      end
+
+      it "deletes the correct user from the database" do
+        expect { @user.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it "no longer shows the deleted user in the list" do
+        expect(page).not_to have_selector('td', text: @user.first_name)
+      end
+    end
   end
 
   describe "authorized actions" do
