@@ -50,7 +50,15 @@ describe "Application layout" do
       end
 
       context "and clicking the Edit My Profile link" do
-        it "shows the edit current user page"
+        before { click_link 'Edit My Profile' }
+
+        it "shows the edit current user page" do
+          expect(page).to have_selector('legend', text: 'Edit User')
+        end
+
+        it "shows the current user's name" do
+          expect(find_field('user_first_name').value).to eq(user_to_log_in.first_name)
+        end
       end
 
       context "and clicking the Users link" do
