@@ -9,7 +9,9 @@
 
   <%= f.static_control :email %>
 
-  <%= f.static_control :address %>
+  <%= f.static_control nil, label: 'Address' do %>
+    <%= simple_format(@user.address) %>
+  <% end %>
 
   <%= f.static_control nil, label: 'Start Date' do %>
     <%= @user.start_date.strftime("%-m/%-d/%Y") %>

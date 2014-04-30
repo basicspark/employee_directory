@@ -17,4 +17,14 @@ module UsersHelper
     !current_user.admin?
   end
 
+  def gravatar_for(user, options={ size: 150 })
+    # Returns the Gravatar for the provided user
+    gravatar_id = Digest::MD5::hexdigest(user.email.downcase)
+    size = options[:size]
+    gravatar_url = "https://secure.gravatar.com/avatar/#{gravatar_id}?s=#{size}"
+    image_tag(gravatar_url, alt: user.first_name + ' ' + user.last_name,
+              class: 'user-gravatar')
+  end
+
+
 end

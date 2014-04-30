@@ -1,12 +1,10 @@
 <!-- ********************* MAIN CONTENT ********************* -->
 <div class="row clearfix">
-
   <div class="col-md-8 column">
 
     <%= render 'form' %>
 
-    <%= link_to 'Go Back  ', users_path %>
-
   </div> <!-- col user form -->
-
+  <%= render 'gravatar_panel' %>
 </div>  <!-- row main content ************************************** -->
+<%= link_to 'Go Back  ', users_path %>

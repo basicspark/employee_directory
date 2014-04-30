@@ -81,6 +81,10 @@ describe "User pages" do
         it "does not display the user's admin option" do
           expect(page).not_to have_content('Administrator')
         end
+
+        it "displays the user's gravatar imagage" do
+          expect(page).to have_selector('img.user-gravatar')
+        end
       end
 
       context "when logged in as a non-admin" do
@@ -108,7 +112,7 @@ describe "User pages" do
         end
 
         it "displays the user's address" do
-          expect(page).to have_selector('p.form-control-static', text: @user.address)
+          expect(page).to have_selector('p', text: @user.address)
         end
 
         it "displays the user's start_date" do
@@ -118,7 +122,7 @@ describe "User pages" do
 
         it "displays the user's birthday" do
           expect(page).to have_selector('p.form-control-static',
-                                text: @user.birthday.strftime("%-m/%-d"))
+                                text: @user.birthday.strftime("%B %-d"))
         end
 
         it "does not display the user's birth year" do
@@ -127,6 +131,10 @@ describe "User pages" do
 
         it "does not display the user's admin option" do
           expect(page).not_to have_content('Administrator')
+        end
+
+        it "displays the user's gravatar imagage" do
+          expect(page).to have_selector('img.user-gravatar')
         end
       end
 
@@ -155,7 +163,7 @@ describe "User pages" do
         end
 
         it "displays the user's address" do
-          expect(page).to have_selector('p.form-control-static', text: @user.address)
+          expect(page).to have_selector('p', text: @user.address)
         end
 
         it "displays the user's start_date" do
@@ -171,6 +179,10 @@ describe "User pages" do
         it "displays the user's admin option" do
           expect(page).to have_selector('p.form-control-static',
                                         text: 'No')
+        end
+
+        it "displays the user's gravatar imagage" do
+          expect(page).to have_selector('img.user-gravatar')
         end
       end
     end
@@ -328,6 +340,11 @@ describe "User pages" do
           expect(find '#user_admin_1').not_to be_checked
         end
 
+        it "does not display the user picture panel" do
+          expect(page).not_to have_selector('h3.panel-title',
+                                            text: 'User Photo Preview')
+        end
+
         context "then submitting with no populated fields" do
           before { click_button 'Create User' }
 
@@ -355,7 +372,7 @@ describe "User pages" do
             fill_in 'Email', with: 'jdoe@myurl.com'
             fill_in 'Password', with: 'foobar'
             fill_in 'Confirm Password', with: 'foobar'
-            fill_in 'Address', with: "123 Somewhere St.\nApt. 123\nAnytown, CA 90101"
+            fill_in 'Address', with: "123 Somewhere St."
             fill_in 'Start Date', with: '2001-03-01'
             fill_in 'Birthday', with: '1976-06-01'
             find(:css, "#user_admin_0[value='0']").set(true)
@@ -382,8 +399,7 @@ describe "User pages" do
           end
 
           it "saves and displays the new user address" do
-            expect(page).to have_selector('p.form-control-static',
-                                          text: '123 Somewhere St.' )
+            expect(page).to have_selector('p', text: '123 Somewhere St.' )
           end
 
           it "saves and displays the new user start_date" do
@@ -468,6 +484,15 @@ describe "User pages" do
           else
             expect(find '#user_admin_0').to be_checked
           end
+        end
+
+        it "displays the user picture panel" do
+          expect(page).to have_selector('h3.panel-title',
+                                        text: 'User Photo Preview')
+        end
+
+        it "displays the user gravatar image" do
+          expect(page).to have_selector('img.user-gravatar')
         end
 
         context "then submitting with a blanked out First Name" do
