@@ -13,8 +13,8 @@ FactoryGirl.define do
     password_confirmation 'september'
 
     factory :user_with_address_and_birthday do
-      address { Faker::Address.street_address + "\n" +
-          Faker::Address.secondary_address + "\n" +
+      address { Faker::Address.street_address + " " +
+          Faker::Address.secondary_address + " " +
           Faker::Address.city + ', ' +
           Faker::Address.state_abbr + ' ' +
           Faker::Address.zip_code }

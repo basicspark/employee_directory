@@ -1,6 +1,10 @@
-<tr>
-  <td><%= directory_entry.last_name %></td>
-  <td><%= directory_entry.first_name %></td>
+<tr id="<%= directory_entry.id %>">
+  <td><div class='user-detail'>
+    <%= link_to directory_entry.last_name, user_path(directory_entry) %>
+  </div></td>
+  <td><div class='user-detail'>
+    <%= link_to directory_entry.first_name, user_path(directory_entry) %>
+  </div></td>
   <td><%= directory_entry.department.name %></td>
   <td><%= directory_entry.phone %></td>
 </tr>
