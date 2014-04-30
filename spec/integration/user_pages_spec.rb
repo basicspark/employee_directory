@@ -36,6 +36,145 @@ describe "User pages" do
       expect(page).to have_selector('td', text: @user.phone)
     end
 
+    it "has a link on first_name to the detail view" do
+      expect(page).to have_link(@user.first_name, href: user_path(@user))
+    end
+
+    it "has a link on the last_name to the details view" do
+      expect(page).to have_link(@user.last_name, href: user_path(@user))
+    end
+
+    describe "user detail screen" do
+      context "when not logged in" do
+        before { within("tr##{@user.id}") { click_link @user.last_name } }
+
+        it "displays the user's name" do
+          expect(page).to have_selector('legend',
+                                        text: "#{@user.first_name} #{@user.last_name}")
+        end
+
+        it "displays the user's department" do
+          expect(page).to have_selector('p.form-control-static',
+                                        text: @user.department.name)
+        end
+
+        it "displays the user's phone number" do
+          expect(page).to have_selector('p.form-control-static', text: @user.phone)
+        end
+
+        it "does not display the user's email" do
+          expect(page).not_to have_content(@user.email)
+        end
+
+        it "does not display the user's address" do
+          expect(page).not_to have_content(@user.address)
+        end
+
+        it "does not display the user's start_date" do
+          expect(page).not_to have_content(@user.start_date.strftime("%-m/%-d/%Y"))
+        end
+
+        it "does not display the user's birthday" do
+          expect(page).not_to have_content(@user.birthday.strftime("%-m/%-d/%Y"))
+        end
+
+        it "does not display the user's admin option" do
+          expect(page).not_to have_content('Administrator')
+        end
+      end
+
+      context "when logged in as a non-admin" do
+        before do
+          log_in_user non_admin_user
+          within("tr##{@user.id}") { click_link @user.last_name }
+        end
+
+        it "displays the user's name" do
+          expect(page).to have_selector('legend',
+                                        text: "#{@user.first_name} #{@user.last_name}")
+        end
+
+        it "displays the user's department" do
+          expect(page).to have_selector('p.form-control-static',
+                                        text: @user.department.name)
+        end
+
+        it "displays the user's phone number" do
+          expect(page).to have_selector('p.form-control-static', text: @user.phone)
+        end
+
+        it "displays the user's email" do
+          expect(page).to have_selector('p.form-control-static', text: @user.email)
+        end
+
+        it "displays the user's address" do
+          expect(page).to have_selector('p.form-control-static', text: @user.address)
+        end
+
+        it "displays the user's start_date" do
+          expect(page).to have_selector('p.form-control-static',
+                                        text: @user.start_date.strftime("%-m/%-d/%Y"))
+        end
+
+        it "displays the user's birthday" do
+          expect(page).to have_selector('p.form-control-static',
+                                text: @user.birthday.strftime("%-m/%-d"))
+        end
+
+        it "does not display the user's birth year" do
+          expect(page).not_to have_content(@user.birthday.strftime("%-m/%-d/%Y"))
+        end
+
+        it "does not display the user's admin option" do
+          expect(page).not_to have_content('Administrator')
+        end
+      end
+
+      context "when logged in as an admin" do
+        before do
+          log_in_user admin_user
+          within("tr##{@user.id}") { click_link @user.last_name }
+        end
+
+        it "displays the user's name" do
+          expect(page).to have_selector('legend',
+                                        text: "#{@user.first_name} #{@user.last_name}")
+        end
+
+        it "displays the user's department" do
+          expect(page).to have_selector('p.form-control-static',
+                                        text: @user.department.name)
+        end
+
+        it "displays the user's phone number" do
+          expect(page).to have_selector('p.form-control-static', text: @user.phone)
+        end
+
+        it "displays the user's email" do
+          expect(page).to have_selector('p.form-control-static', text: @user.email)
+        end
+
+        it "displays the user's address" do
+          expect(page).to have_selector('p.form-control-static', text: @user.address)
+        end
+
+        it "displays the user's start_date" do
+          expect(page).to have_selector('p.form-control-static',
+                                        text: @user.start_date.strftime("%-m/%-d/%Y"))
+        end
+
+        it "displays the user's birthday with year" do
+          expect(page).to have_selector('p.form-control-static',
+                                        text: @user.birthday.strftime("%-m/%-d/%Y"))
+        end
+
+        it "displays the user's admin option" do
+          expect(page).to have_selector('p.form-control-static',
+                                        text: 'No')
+        end
+      end
+    end
+
     describe "pagination" do
 
       before(:all) do
