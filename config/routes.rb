@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   match '/login', to: 'sessions#new', via: 'get'
   match '/logout', to: 'sessions#destroy', via: 'delete'
   match '/directory', to: 'users#directory', via: 'get'
+  match '/directory', to: 'users#directory', via: 'post'
 end
