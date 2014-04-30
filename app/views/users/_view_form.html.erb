@@ -10,14 +10,16 @@
                        class: 'view-option' %>
 
 
-  <%= f.form_group do  %>
+  <div class="dept-list" <% if (params[:user_view] == 'all' || params[:user_view] == nil) %> style="display: none;" <% end %> >
+
     <%= f.select :view_department_id,
                  options_for_select(Department.all.collect{ |d| [d.name, d.id]},
                                     params[:view_department_id]),
                                     label: 'Department', prompt: true %>
-  <% end %>
+  </div>
 
-
-  <%= f.submit class: 'btn btn-success', value: "Apply" %>
+  <div class="filter-apply">
+    <%= f.submit class: 'btn btn-primary', value: "Apply" %>
+  </div>
 
 <% end %>
