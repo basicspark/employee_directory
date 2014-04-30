@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   belongs_to :department
+  default_scope -> { order('last_name, first_name') }
 
   before_create :create_remember_token
 
