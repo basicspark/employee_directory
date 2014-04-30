@@ -1,0 +1,23 @@
+<%= bootstrap_form_tag url: directory_path, layout: :horizontal,
+                       label_col: 'col-lg-2', control_col: 'col-lg-10' do |f| %>
+
+
+    <%= f.radio_button :user_view, 'all', label: "All Users",
+                       checked: view_option_check_for('all', params),
+                       class: 'view-option' %>
+    <%= f.radio_button :user_view, 'dep', label: "Users by Department",
+                       checked: view_option_check_for('dep', params),
+                       class: 'view-option' %>
+
+
+  <%= f.form_group do  %>
+    <%= f.select :view_department_id,
+                 options_for_select(Department.all.collect{ |d| [d.name, d.id]},
+                                    params[:view_department_id]),
+                                    label: 'Department', prompt: true %>
+  <% end %>
+
+
+  <%= f.submit class: 'btn btn-success', value: "Apply" %>
+
+<% end %>

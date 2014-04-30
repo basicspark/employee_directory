@@ -218,6 +218,52 @@ describe "User pages" do
         end
       end
     end
+
+    describe "filtering" do
+      before do
+        @user_in_sales = create(:user, department: create(:department, name: 'Sales') )
+        @user_in_marketing = create(:user, department: create(:department, name: 'Marketing') )
+        visit directory_path
+      end
+
+      context "when all selected" do
+        before do
+          within('div.panel.panel-default.visible-md.visible-lg') {
+            find(:css, "#_user_view_all[value='all']").set(true)
+            click_button 'Apply'
+          }
+        end
+
+        it "displays the user in sales" do
+          within("tr##{@user_in_sales.id}") { expect(page).to have_selector('td',
+                                                text: @user_in_sales.last_name) }
+        end
+
+        it "displays the user in marketing" do
+          within("tr##{@user_in_marketing.id}") { expect(page).to have_selector('td',
+                                                text: @user_in_marketing.last_name) }
+        end
+      end
+
+      context "when one department selected" do
+        before do
+          within('div.panel.panel-default.visible-md.visible-lg') {
+            find(:css, "#_user_view_dep[value='dep']").set(true)
+            select 'Marketing', from: '_view_department_id'
+            click_button 'Apply'
+          }
+        end
+
+        it "displays the user in marketing" do
+          within("tr##{@user_in_marketing.id}") { expect(page).to have_selector('td',
+                                                text: @user_in_marketing.last_name) }
+        end
+
+        it "does not display the user in sales" do
+          expect(page).not_to have_selector('td', text: @user_in_sales.last_name)
+        end
+      end
+    end
   end
 
   describe "index" do

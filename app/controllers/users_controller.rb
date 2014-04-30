@@ -92,7 +92,11 @@ class UsersController < ApplicationController
     end
 
     def get_users
-      @users = User.paginate(page: params[:page])
+      if params[:user_view] == 'dep'
+        @users = User.where(department_id: params[:view_department_id]).paginate(page: params[:page])
+      else
+        @users = User.paginate(page: params[:page])
+      end
     end
 
     def edit_self_only
