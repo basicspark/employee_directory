@@ -34,7 +34,7 @@ def make_users
                phone: '312-562-8510',
                email: 'russ@russconsult.com',
                start_date: Chronic::parse('6-1-2013'),
-               address: "1123 W. Hummingbird Way\nApt. 304\nChicago, IL 60644",
+               address: "1123 W. Hummingbird Way\r\nApt. 304\r\nChicago, IL 60644",
                birthday: Chronic::parse('5-4-1980'),
                admin: true,
                password: 'myfirstapp',
@@ -61,8 +61,8 @@ def retrieve_random_department
 end
 
 def generate_address
-  Faker::Address.street_address + "\n" +
-      Faker::Address.secondary_address + "\n" +
+  Faker::Address.street_address + "\r\n" +
+      Faker::Address.secondary_address + "\r\n" +
       Faker::Address.city + ', ' +
       Faker::Address.state_abbr + ' ' +
       Faker::Address.zip_code
