@@ -26,5 +26,16 @@ module UsersHelper
               class: 'user-gravatar')
   end
 
+  def view_option_check_for(option, param)
+    if option == 'all' && param[:user_view] == 'all'
+      true
+    elsif option == 'dep' && param[:user_view] == 'dep'
+      true
+    elsif option == 'all' && param[:user_view] == nil
+      true
+    else
+      false
+    end
+  end
 
 end
