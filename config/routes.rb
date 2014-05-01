@@ -9,4 +9,5 @@ Rails.application.routes.draw do
   match '/logout', to: 'sessions#destroy', via: 'delete'
   match '/directory', to: 'users#directory', via: 'get'
   match '/directory', to: 'users#directory', via: 'post'
+  match '/users_filter', to: 'users#index', via: 'post'
 end
