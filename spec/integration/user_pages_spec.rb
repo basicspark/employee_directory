@@ -221,8 +221,10 @@ describe "User pages" do
 
     describe "filtering" do
       before do
-        @user_in_sales = create(:user, department: create(:department, name: 'Sales') )
-        @user_in_marketing = create(:user, department: create(:department, name: 'Marketing') )
+        @sales_department =  create :department, name: 'Sales'
+        @marketing_department = create :department, name: 'Marketing'
+        @user_in_sales = create :user, department: @sales_department
+        @user_in_marketing = create :user, department: @marketing_department
         visit directory_path
       end
 
@@ -245,24 +247,163 @@ describe "User pages" do
         end
       end
 
-      # context "when one department selected" do
-      #   before do
-      #     within('div.panel.panel-default.visible-md.visible-lg') {
-      #       find(:css, "#_user_view_dep[value='dep']").set(true)
-      #       select 'Marketing', from: '_view_department_id'
-      #       click_button 'Apply'
-      #     }
-      #   end
-      #
-      #   it "displays the user in marketing" do
-      #     within("tr##{@user_in_marketing.id}") { expect(page).to have_selector('td',
-      #                                           text: @user_in_marketing.last_name) }
-      #   end
-      #
-      #   it "does not display the user in sales" do
-      #     expect(page).not_to have_selector('td', text: @user_in_sales.last_name)
-      #   end
-      # end
+      # Testing this one directly since it uses JS within the UI
+      context "when one department selected" do
+        before do
+          post directory_path, user_view: 'dep',
+               view_department_id: @marketing_department.id.to_s
+        end
+
+        it "displays the user in marketing" do
+          expect(response.body).to include(@user_in_marketing.last_name)
+        end
+
+        it "does not display the user in sales" do
+          expect(response.body).not_to include(@user_in_sales.last_name)
+        end
+      end
+    end
+
+    describe "searching" do
+      before do
+        @user_john = create :user, first_name: 'johniswaycool'
+        @user_jane = create :user, first_name: 'janerulestheschool'
+      end
+
+      context "when the search box is empty" do
+        before do
+          within('div.panel.panel-default.visible-md.visible-lg') {
+            fill_in 'user_search', with: ''
+            click_button 'Apply'
+          }
+        end
+
+        it "displays the john record" do
+          within("tr##{@user_john.id}") { expect(page).to have_selector('td',
+                                              text: @user_john.first_name) }
+        end
+
+        it "displays the jane record" do
+          within("tr##{@user_jane.id}") { expect(page).to have_selector('td',
+                                              text: @user_jane.first_name) }
+        end
+      end
+
+      context "when searching results in one match" do
+        before do
+          within('div.panel.panel-default.visible-md.visible-lg') {
+            fill_in 'user_search', with: 'waycool'
+            click_button 'Apply'
+          }
+        end
+
+        it "displays the john record" do
+          within("tr##{@user_john.id}") { expect(page).to have_selector('td',
+                                         text: @user_john.first_name) }
+        end
+
+        it "does not display the jane record" do
+          expect(page).not_to have_content(@user_jane.first_name)
+        end
+      end
+
+      context "when searching results in no matches" do
+        before do
+          within('div.panel.panel-default.visible-md.visible-lg') {
+            fill_in 'user_search', with: 'wontmatch'
+            click_button 'Apply'
+          }
+        end
+
+        it "does not display the john record" do
+          expect(page).not_to have_content(@user_john.first_name)
+        end
+
+        it "does not display the jane record" do
+          expect(page).not_to have_content(@user_jane.first_name)
+        end
+      end
+
+      context "when searching results in both matches" do
+        before do
+          within('div.panel.panel-default.visible-md.visible-lg') {
+            fill_in 'user_search', with: 'ool'
+            click_button 'Apply'
+          }
+        end
+
+        it "displays the john record" do
+          within("tr##{@user_john.id}") { expect(page).to have_selector('td',
+                                          text: @user_john.first_name) }
+        end
+
+        it "displays the jane record" do
+          within("tr##{@user_jane.id}") { expect(page).to have_selector('td',
+                                          text: @user_jane.first_name) }
+        end
+      end
+
+      context "within a specific department" do
+        before do
+          @accounting_department = create :department, name: 'Accounting'
+          @finance_department = create :department, name: 'Finance'
+          @other_department = create :department, name: 'Other'
+          @user_bob_accounting = create :user, first_name: 'bobunusual',
+                                        last_name: 'smithisamazing',
+                                        department: @accounting_department
+          @user_bob_finance = create :user, first_name: 'bobunusual',
+                                     last_name: 'stevensissuper',
+                                     department: @finance_department
+        end
+
+        # These must all be tested directly because the UI utilizes JS
+        context "for all departments" do
+          before do
+            post directory_path, user_view: 'all',
+                 user_search: 'bobunusual'
+          end
+
+          it "displays the bob in accounting record" do
+            expect(response.body).to include(@user_bob_accounting.last_name)
+          end
+
+          it "displays the bob in finance record" do
+            expect(response.body).to include(@user_bob_finance.last_name)
+          end
+        end
+
+        context "for just one department with a match" do
+          before do
+            post directory_path, user_view: 'dep',
+                 view_department_id: @finance_department.id,
+                 user_search: 'bobunusual'
+          end
+
+          it "displays the bob in finance record" do
+            expect(response.body).to include(@user_bob_finance.last_name)
+          end
+
+          it "does not display the bob in accounting record" do
+            expect(response.body).not_to include(@user_bob_accounting.last_name)
+          end
+        end
+
+        context "for a department without a match" do
+          before do
+            post directory_path, user_view: 'dep',
+                 view_department_id: @other_department.id,
+                 user_search: 'bobunusual'
+          end
+
+          it "does not display the bob in finance record" do
+            expect(response.body).not_to include(@user_bob_finance.last_name)
+          end
+
+          it "does not display the bob in accounting record" do
+            expect(response.body).not_to include(@user_bob_accounting.last_name)
+          end
+        end
+      end
     end
   end
 

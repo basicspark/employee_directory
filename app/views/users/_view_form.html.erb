@@ -1,6 +1,8 @@
 <%= bootstrap_form_tag url: filter_path, layout: :horizontal,
                        control_col: 'col-xs-12' do |f| %>
 
+    <%= f.search_field :user_search, hide_label: true, placeholder: 'Search',
+                       class: 'set-focus', value: params[:user_search] %>
 
     <%= f.radio_button :user_view, 'all', label: "All Users",
                        checked: view_option_check_for('all', params),
@@ -15,7 +17,7 @@
     <%= f.select :view_department_id,
                  options_for_select(Department.all.collect{ |d| [d.name, d.id]},
                                     params[:view_department_id]),
-                                    label: 'Department', prompt: true %>
+                                    hide_label: true, prompt: 'Select Department...' %>
   </div>
 
   <div class="filter-apply">
