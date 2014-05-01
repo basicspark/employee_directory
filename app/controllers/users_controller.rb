@@ -93,9 +93,12 @@ class UsersController < ApplicationController
 
     def get_users
       if params[:user_view] == 'dep'
-        @users = User.where(department_id: params[:view_department_id]).paginate(page: params[:page])
+        # @users = User.where(department_id: params[:view_department_id]).paginate(page: params[:page])
+        @users = find_by_name_and_department(params[:user_search],
+                    params[:view_department_id]).paginate(page: params[:page])
       else
-        @users = User.paginate(page: params[:page])
+        @users = find_by_name_and_department(params[:user_search],
+                                            nil).paginate(page: params[:page])
       end
     end
 
@@ -105,6 +108,28 @@ class UsersController < ApplicationController
         if current_user != User.find(params[:id])
           # Trying to edit someone else, so redirect to their own record
           redirect_to edit_user_url(current_user)
+        end
+      end
+    end
+
+    def find_by_name_and_department(name, department_id)
+      # Return users based on passed in name or department_id
+      if name
+        # Name is passed in
+        if department_id
+          # Search by both name and department
+          User.with_name(name).in_department(department_id)
+        else
+          # Only search by name
+          User.with_name(name)
+        end
+      else
+        if department_id
+          # Only search by department
+          User.in_department(department_id)
+        else
+          # Nothing passed in so return it all
+          User.all
         end
       end
     end

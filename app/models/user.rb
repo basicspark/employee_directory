@@ -1,6 +1,10 @@
 class User < ActiveRecord::Base
   belongs_to :department
   default_scope -> { order('last_name, first_name') }
+  scope :in_department, lambda { |dept_id| where(department_id: dept_id) }
+  scope :with_name,
+        lambda { |name| where("lower(first_name) LIKE ? or lower(last_name) LIKE ?",
+                              "%#{name.downcase}%", "%#{name.downcase}%" ) }
 
   before_create :create_remember_token
 
