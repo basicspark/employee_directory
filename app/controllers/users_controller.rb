@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  include ActionRestrictions
   before_action :logged_in_user, except: [:directory, :show]
   before_action :admin_user, except: [:directory, :edit, :update, :show]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
@@ -62,7 +63,7 @@ class UsersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_user
       @user = User.find(params[:id])
     end
@@ -81,24 +82,36 @@ class UsersController < ApplicationController
       end
     end
 
-    # Require a login for some actions
-    def logged_in_user
-      redirect_to login_url, notice: 'Please log in.' unless logged_in?
-    end
-
-    # Require an admin user for some actions
-    def admin_user
-      redirect_to root_url unless current_user.admin?
-    end
-
     def get_users
-      if params[:user_view] == 'dep'
-        @users = find_by_name_and_department(params[:user_search],
-                    params[:view_department_id]).paginate(page: params[:page])
+      name_to_find = params[:user_search]
+      dept_to_find = params[:user_view] == 'dep' ? params[:view_department_id] : nil
+      @users = find_users_by_page(name_to_find, dept_to_find, params[:page])
+    end
+
+
+    def find_users_by_page(name, department_id, page)
+      # Return users based on passed in name or department_id
+      if name
+        # Name is passed in
+        if department_id
+          # Search by both name and department
+          found_users = User.with_name(name).in_department(department_id)
+        else
+          # Only search by name
+          found_users = User.with_name(name)
+        end
       else
-        @users = find_by_name_and_department(params[:user_search],
-                                            nil).paginate(page: params[:page])
+        if department_id
+          # Only search by department
+          found_users = User.in_department(department_id)
+        else
+          # Nothing passed in so return it all
+          found_users = User.all
+        end
       end
+
+      # Return the result
+      found_users.paginate(page: page)
     end
 
     def edit_self_only
@@ -107,28 +120,6 @@ class UsersController < ApplicationController
         if current_user != User.find(params[:id])
           # Trying to edit someone else, so redirect to their own record
           redirect_to edit_user_url(current_user)
-        end
-      end
-    end
-
-    def find_by_name_and_department(name, department_id)
-      # Return users based on passed in name or department_id
-      if name
-        # Name is passed in
-        if department_id
-          # Search by both name and department
-          User.with_name(name).in_department(department_id)
-        else
-          # Only search by name
-          User.with_name(name)
-        end
-      else
-        if department_id
-          # Only search by department
-          User.in_department(department_id)
-        else
-          # Nothing passed in so return it all
-          User.all
         end
       end
     end

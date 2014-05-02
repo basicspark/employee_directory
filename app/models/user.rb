@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   belongs_to :department
+
   default_scope -> { order('last_name, first_name') }
   scope :in_department, lambda { |dept_id| where(department_id: dept_id) }
   scope :with_name,

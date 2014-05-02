@@ -223,8 +223,10 @@ describe "User pages" do
       before do
         @sales_department =  create :department, name: 'Sales'
         @marketing_department = create :department, name: 'Marketing'
-        @user_in_sales = create :user, department: @sales_department
-        @user_in_marketing = create :user, department: @marketing_department
+        @user_in_sales = create :user, department: @sales_department,
+                                last_name: 'guyinsales'
+        @user_in_marketing = create :user, department: @marketing_department,
+                                last_name: 'guyinmarketing'
         visit directory_path
       end
 

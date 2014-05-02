@@ -1,4 +1,5 @@
 class DepartmentsController < ApplicationController
+  include ActionRestrictions
   before_action :logged_in_user
   before_action :admin_user
   before_action :set_department, only: [:edit, :update, :destroy]
@@ -55,7 +56,6 @@ class DepartmentsController < ApplicationController
 
   private
 
-    # Use callbacks to share common setup or constraints between actions.
     def set_department
       @department = Department.find(params[:id])
     end
@@ -65,19 +65,8 @@ class DepartmentsController < ApplicationController
       params.require(:department).permit(:name, :location, :phone)
     end
 
-    # All actions require a logged in user
-    def logged_in_user
-      redirect_to login_url, notice: 'Please log in.' unless logged_in?
-    end
-
-    # All actions require an admin user
-    def admin_user
-      redirect_to root_url unless current_user.admin?
-    end
-
     # Don't allow deletion of departments with assigned users
     def check_for_assigned_users
-      set_department unless @department
       if @department.users.any?
         flash[:error] = "Can't delete department with assigned users."
         flash.keep(:error)

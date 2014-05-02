@@ -1,3 +1,4 @@
+// Only display the department dropdown when the department view option is selected
 $(document).ready(function(){
     $("input[name$='[user_view]'").change(function(){
         var radio = $(this).val();
