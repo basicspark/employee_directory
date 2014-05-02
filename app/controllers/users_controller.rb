@@ -93,7 +93,6 @@ class UsersController < ApplicationController
 
     def get_users
       if params[:user_view] == 'dep'
-        # @users = User.where(department_id: params[:view_department_id]).paginate(page: params[:page])
         @users = find_by_name_and_department(params[:user_search],
                     params[:view_department_id]).paginate(page: params[:page])
       else

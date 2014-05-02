@@ -23,7 +23,11 @@
           </tr>
           </thead>
           <tbody data-link="row">
-          <%= render @users %>
+          <% if @users.any? %>
+            <%= render @users %>
+          <% else %>
+            <tr><td colspan="4" class="no-records">No Matching Records</td></tr>
+          <% end %>
           </tbody>
         </table>
         <%= will_paginate @users, renderer: BootstrapPagination::Rails,
