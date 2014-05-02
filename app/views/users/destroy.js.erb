@@ -1,2 +1,1 @@
-$("tr#<%= @user.id %>").after('<tr></tr');
-$("tr#<%= @user.id %>").fadeOut();
+<%= render 'shared/_remove_row', target_object: @user %>

@@ -13,35 +13,32 @@ class DepartmentsController < ApplicationController
   # GET /departments/new
   def new
     @department = Department.new
+    render :form
   end
 
   # GET /departments/1/edit
   def edit
+    render :form
   end
 
   # POST /departments
   def create
     @department = Department.new(department_params)
-
-    respond_to do |format|
-      if @department.save
-        flash[:success] = "Department was successfully created."
-        format.html { redirect_to departments_url }
-      else
-        format.html { render :new }
-      end
+    if @department.save
+      flash[:success] = "Department was successfully created."
+      redirect_to departments_url
+    else
+      render :form
     end
   end
 
   # PATCH/PUT /departments/1
   def update
-    respond_to do |format|
-      if @department.update(department_params)
-        flash[:success] = 'Department was successfully updated.'
-        format.html { redirect_to departments_url }
-      else
-        format.html { render :edit }
-      end
+    if @department.update(department_params)
+      flash[:success] = 'Department was successfully updated.'
+      redirect_to departments_url
+    else
+      render :form
     end
   end
 

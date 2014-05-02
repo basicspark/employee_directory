@@ -1,0 +1,32 @@
+<!-- ********************* MAIN CONTENT ********************* -->
+<div class="row clearfix">
+
+  <div class="col-md-8 column">
+    <%= render 'shared/form_errors', form_target: @department %>
+
+    <!-- DEPARTMENT FORM -->
+    <div class="well">
+      <%= bootstrap_form_for(@department, layout: :horizontal,
+                             label_col: 'col-lg-3', control_col: 'col-lg-9') do |f| %>
+
+        <legend><%= department_form_legend %></legend>
+
+        <!--Department Name -->
+        <%= f.text_field :name, placeholder: 'Department Name',
+                         label: 'Department Name', class: 'set-focus' %>
+
+        <!--Location-->
+        <%= f.text_field :location, placeholder: 'Location' %>
+
+        <!--Phone-->
+        <%= f.phone_field :phone, class: 'mask-phone', placeholder: 'xxx-xxx-xxxx' %>
+
+        <%= f.form_group do %>
+          <%= f.submit class: 'btn btn-success' %>
+        <% end %>
+      <% end %>
+    </div> <!-- well -->
+    <%= link_to 'Go Back  ', departments_path %>
+  </div> <!-- col dept form -->
+
+</div>  <!-- row main content ************************************** -->

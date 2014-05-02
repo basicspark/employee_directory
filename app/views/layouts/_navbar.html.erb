@@ -1,18 +1,16 @@
-<div class="container">
-
-  <!-- ********************* NAVIGATION BAR ********************* -->
-  <div class="navbar navbar-default">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <%= link_to Rails.configuration.company_name, root_path, class:'navbar-brand' %>
-    </div>
-    <% if logged_in? %>
-      <%= render 'layouts/logged_in_links' %>
-    <% else %>
-      <%= render 'layouts/logged_out_links' %>
-    <% end %>
-  </div> <!-- navbar *********************************************-->
+<!-- ********************* NAVIGATION BAR ********************* -->
+<div class="navbar navbar-default">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <%= link_to Rails.configuration.company_name, root_path, class:'navbar-brand' %>
+  </div>
+  <% if logged_in? %>
+    <%= render 'layouts/logged_in_links' %>
+  <% else %>
+    <%= render 'layouts/logged_out_links' %>
+  <% end %>
+</div> <!-- navbar *********************************************-->
