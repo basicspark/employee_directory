@@ -46,7 +46,7 @@ class DepartmentsController < ApplicationController
   def destroy
     @department.destroy
     respond_to do |format|
-      format.js
+      format.js { render template: 'shared/remove_row', locals: { target_object: @department } }
       format.html { redirect_to departments_url }
     end
   end

@@ -57,7 +57,7 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     respond_to do |format|
-      format.js
+      format.js { render template: 'shared/remove_row', locals: { target_object: @user } }
       format.html { redirect_to users_url }
     end
   end
@@ -88,29 +88,22 @@ class UsersController < ApplicationController
       @users = find_users_by_page(name_to_find, dept_to_find, params[:page])
     end
 
-
-    def find_users_by_page(name, department_id, page)
-      # Return users based on passed in name or department_id
-      if name
-        # Name is passed in
-        if department_id
+    def find_users_by_page(name, department, page)
+      found_users = case
+        when name && department
           # Search by both name and department
-          found_users = User.with_name(name).in_department(department_id)
-        else
+          User.with_name(name).in_department(department)
+        when name && !department
           # Only search by name
-          found_users = User.with_name(name)
-        end
-      else
-        if department_id
+          User.with_name(name)
+        when !name && department
           # Only search by department
-          found_users = User.in_department(department_id)
+          User.in_department(department)
         else
-          # Nothing passed in so return it all
-          found_users = User.all
-        end
+          # No search criteria so return all
+          User.all
       end
-
-      # Return the result
+      # Return paginated result
       found_users.paginate(page: page)
     end
 

@@ -2,7 +2,7 @@
 <div class="row clearfix">
 
   <div class="col-md-8 column">
-    <%= render 'shared/form_errors', form_target: @department %>
+    <%= render partial: 'shared/form_errors', locals: { form_target: @department } %>
 
     <!-- DEPARTMENT FORM -->
     <div class="well">
