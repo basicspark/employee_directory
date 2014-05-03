@@ -46,7 +46,8 @@ class DepartmentsController < ApplicationController
   def destroy
     @department.destroy
     respond_to do |format|
-      format.js { render template: 'shared/remove_row', locals: { target_object: @department } }
+      format.js { render template: 'shared/remove_row',
+                         locals: { target_object: @department } }
       format.html { redirect_to departments_url }
     end
   end
@@ -68,7 +69,7 @@ class DepartmentsController < ApplicationController
         flash[:error] = "Can't delete department with assigned users."
         flash.keep(:error)
         render js: "window.location = '#{departments_url}'"
-        return false
+        false
       end
     end
 end
