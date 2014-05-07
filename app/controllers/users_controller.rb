@@ -21,21 +21,22 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+    render :form
   end
 
   # GET /users/1/edit
   def edit
+    render :form
   end
 
   # POST /users
   def create
     @user = User.new(user_params)
-
     if @user.save
       flash[:success] = 'User was successfully created.'
       redirect_to @user
     else
-      render :new
+      render :form
     end
   end
 
@@ -45,7 +46,7 @@ class UsersController < ApplicationController
       flash[:success] = 'User was successfully updated.'
       redirect_to @user
     else
-      render :edit
+      render :form
     end
   end
 

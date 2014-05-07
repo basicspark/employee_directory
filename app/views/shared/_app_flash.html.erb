@@ -1,7 +1,12 @@
 <% if flash.any? %>
   <!-- FLASH BOX -->
   <div class="row clearfix">
-    <div class="col-xs-12">
+    <% if box_size == :small %>
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+    <% else %>
+      <div class="col-xs-12">
+    <% end %>
       <% flash.each do |type, message| %>
         <div class="alert alert-dismissable <%= flash_class_for(type) %>">
           <button type="button" class="close" data-dismiss="alert">×</button>
@@ -9,5 +14,10 @@
         </div>
       <% end %>
     </div>
+    <% if box_size == :small %>
+      <div class="col-md-3"></div>
+    <% end %>
   </div> <!-- Flash Box -->
 <% end %>
+
+

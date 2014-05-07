@@ -1,14 +1,5 @@
 <!-- ********************* MAIN CONTENT ********************* -->
-<!-- Error Panel -->
-<% if flash.any? %>
-  <div class="row clearfix">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
-      <%= render 'shared/app_flash' %>
-    </div>
-    <div class="col-md-3"></div>
-  </div> <!-- Error Panel -->
-<% end %>
+<%= render partial: 'shared/app_flash', locals: { box_size: :small } %>
 
 <!-- Login Form -->
 <div class="row clearfix signin-row">
@@ -18,10 +9,12 @@
 
       <h2 class="form-signin-heading">Please log in</h2>
 
+      <!--Email-->
       <%= f.email_field :email, hide_label: true,
                         placeholder: 'Email address',
-                        class: 'set-focus', required: true %>
 
+                        class: 'set-focus', required: true %>
+      <!--Password-->
       <%= f.password_field :password, hide_label: true,
                            placeholder: 'Password', required: true %>
 
