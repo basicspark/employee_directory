@@ -3,26 +3,19 @@
 
   <div class="col-md-8 column">
 
-    <%= render 'shared/app_flash' %>
+    <%= render partial: 'shared/app_flash',
+               locals: { box_size: :large } %>
 
     <div class="well">
       <div class="row">
+        <!-- SIDE PANEL -->
         <div class="col-md-4">
           <%= gravatar_for @user %>
-        </div>
+        </div> <!-- col side panel -->
+        <!--USER DETAIL-->
         <div class="col-md-8">
-
-            <% if current_user %>
-              <% if current_user.admin? %>
-                <%= render 'admin_show' %>
-              <% else %>
-                <%= render 'logged_in_show' %>
-              <% end %>
-            <% else %>
-              <%= render 'general_show' %>
-            <% end %>
-
-        </div>
+          <%= render 'user_detail' %>
+        </div> <!--col user detail-->
       </div> <!-- row panel -->
     </div> <!-- well -->
 

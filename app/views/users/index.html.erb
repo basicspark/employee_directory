@@ -32,9 +32,9 @@
         </table>
         <%= will_paginate @users, renderer: BootstrapPagination::Rails,
                           class: 'pagination-sm',
-                          params: { user_view: params[:user_view],
-                                    view_department_id: params[:view_department_id],
-                                    user_search: params[:user_search] }%>
+                          params: { user_filter_type: params[:user_filter_type],
+                                    user_filter_department: params[:user_filter_department],
+                                    user_filter_string: params[:user_filter_string] }%>
       </div> <!-- panel body -->
     </div>  <!-- panel -->
   </div> <!-- col user list -->

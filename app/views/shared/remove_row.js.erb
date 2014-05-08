@@ -1,0 +1,4 @@
+// Add a blank row beneath the target to maintain table striping,
+// then fade out the target row
+$("tr#<%= target_object.id %>").after('<tr></tr');
+$("tr#<%= target_object.id %>").fadeOut();

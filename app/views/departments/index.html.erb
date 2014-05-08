@@ -3,7 +3,8 @@
 
   <div class="col-md-9 column">
 
-    <%= render 'shared/app_flash' %>
+    <%= render partial: 'shared/app_flash',
+               locals: { box_size: :large } %>
 
     <!-- DEPARTMENT LIST -->
     <div class="panel panel-default table-panel">
