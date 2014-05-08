@@ -1,36 +1,13 @@
-<% if collapsed %>
-  <!-- Collapsed Side Panel -->
-  <div class="panel panel-default visible-xs visible-sm">
-<% else %>
-  <!-- Non-Collapsed Side Panel -->
-  <div class="panel panel-default visible-md visible-lg">
-<% end %>
-
+<!-- Side Panel -->
+<div class="panel panel-default <%= filter_panel_class_for(collapsed) %>">
   <div class="panel-heading">
     <h3 class="panel-title">
-
-      <% if collapsed %>
-        <a data-toggle="collapse" href="#collapseOne">
-          View Options<b class="caret"></b>
-        </a>
-      <% else %>
-        View Options
-      <% end %>
-
+      <%= filter_panel_title_for("View Options", collapsed) %>
     </h3>
   </div>
-
-  <% if collapsed %>
-    <div id="collapseOne" class="panel-collapse collapse">
+  <%= filter_panel_body_for(collapsed) do %>
+    <div class="panel-body">
+      <%= render 'filter_form', filter_path: filter_path %>
+    </div> <!-- panel body -->
   <% end %>
-
-      <div class="panel-body">
-        <%= render 'filter_form', filter_path: filter_path %>
-      </div> <!-- panel body -->
-
-<% if collapsed %>
-    </div> <!-- collapse group -->
-  </div> <!-- collapsed side panel -->
-<% else %>
-  </div> <!-- non-collapsed Panel -->
-<% end %>
+</div> <!-- side panel -->

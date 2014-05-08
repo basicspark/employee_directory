@@ -81,8 +81,8 @@ class UsersController < ApplicationController
     end
 
     def get_users
-      name_to_find = params[:user_search]
-      dept_to_find = params[:user_view] == 'dep' ? params[:view_department_id] : nil
+      name_to_find = params[:user_filter_string]
+      dept_to_find = params[:user_filter_type] == 'dep' ? params[:user_filter_department] : nil
       @users = find_users_by_page(name_to_find, dept_to_find, params[:page])
     end
 

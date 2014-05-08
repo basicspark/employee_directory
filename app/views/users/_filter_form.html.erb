@@ -2,22 +2,22 @@
 <%= bootstrap_form_tag url: filter_path, layout: :horizontal,
                        control_col: 'col-xs-12' do |f| %>
 
-    <%= f.search_field :user_search, hide_label: true, placeholder: 'Search',
-                       class: 'set-focus', value: params[:user_search] %>
+    <%= f.search_field :user_filter_string, hide_label: true, placeholder: 'Search',
+                       class: 'set-focus', value: params[:user_filter_string] %>
 
-    <%= f.radio_button :user_view, 'all', label: "All Users",
+    <%= f.radio_button :user_filter_type, 'all', label: "All Users",
                        checked: view_option_check_for('all', params),
                        class: 'view-option' %>
-    <%= f.radio_button :user_view, 'dep', label: "Users by Department",
+    <%= f.radio_button :user_filter_type, 'dep', label: "Users by Department",
                        checked: view_option_check_for('dep', params),
                        class: 'view-option' %>
 
 
-  <div class="dept-list" <% if (params[:user_view] == 'all' || params[:user_view] == nil) %> style="display: none;" <% end %> >
+  <div class="dept-list" <% if (params[:user_filter_type] == 'all' || params[:user_filter_type] == nil) %> style="display: none;" <% end %> >
 
-    <%= f.select :view_department_id,
+    <%= f.select :user_filter_department,
                  options_for_select(Department.all.collect{ |d| [d.name, d.id]},
-                                    params[:view_department_id]),
+                                    params[:user_filter_department]),
                                     hide_label: true, prompt: 'Select Department...' %>
   </div>
 

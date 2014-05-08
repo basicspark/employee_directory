@@ -27,14 +27,41 @@ module UsersHelper
   end
 
   def view_option_check_for(option, param)
-    if option == 'all' && param[:user_view] == 'all'
+    if option == 'all' && param[:user_filter_type] == 'all'
       true
-    elsif option == 'dep' && param[:user_view] == 'dep'
+    elsif option == 'dep' && param[:user_filter_type] == 'dep'
       true
-    elsif option == 'all' && param[:user_view] == nil
+    elsif option == 'all' && param[:user_filter_type] == nil
       true
     else
       false
+    end
+  end
+
+  def filter_panel_class_for(collapsed = false)
+    if collapsed
+      "visible-xs visible-sm"
+    else
+      "visible-md visible-lg"
+    end
+  end
+
+  def filter_panel_title_for(title, collapsed = false)
+    if collapsed
+      output = "<a data-toggle='collapse' href='#collapseOne'>"
+      output += title + "<b class='caret'></b></a>"
+      output.html_safe
+    else
+      title
+    end
+  end
+
+  def filter_panel_body_for(collapsed = false, &block)
+    if collapsed
+      content_tag(:div, capture(&block), id: 'collapseOne',
+                  class: 'panel-collapse collapse')
+    else
+      capture(&block)
     end
   end
 end

@@ -233,7 +233,7 @@ describe "User pages" do
       context "when all selected" do
         before do
           within('div.panel.panel-default.visible-md.visible-lg') {
-            find(:css, "#_user_view_all[value='all']").set(true)
+            find(:css, "#_user_filter_type_all[value='all']").set(true)
             click_button 'Apply'
           }
         end
@@ -252,8 +252,8 @@ describe "User pages" do
       # Testing this one directly since it uses JS within the UI
       context "when one department selected" do
         before do
-          post directory_path, user_view: 'dep',
-               view_department_id: @marketing_department.id.to_s
+          post directory_path, user_filter_type: 'dep',
+               user_filter_department: @marketing_department.id.to_s
         end
 
         it "displays the user in marketing" do
@@ -275,7 +275,7 @@ describe "User pages" do
       context "when the search box is empty" do
         before do
           within('div.panel.panel-default.visible-md.visible-lg') {
-            fill_in 'user_search', with: ''
+            fill_in 'user_filter_string', with: ''
             click_button 'Apply'
           }
         end
@@ -294,7 +294,7 @@ describe "User pages" do
       context "when searching results in one match" do
         before do
           within('div.panel.panel-default.visible-md.visible-lg') {
-            fill_in 'user_search', with: 'waycool'
+            fill_in 'user_filter_string', with: 'waycool'
             click_button 'Apply'
           }
         end
@@ -312,7 +312,7 @@ describe "User pages" do
       context "when searching results in no matches" do
         before do
           within('div.panel.panel-default.visible-md.visible-lg') {
-            fill_in 'user_search', with: 'wontmatch'
+            fill_in 'user_filter_string', with: 'wontmatch'
             click_button 'Apply'
           }
         end
@@ -329,7 +329,7 @@ describe "User pages" do
       context "when searching results in both matches" do
         before do
           within('div.panel.panel-default.visible-md.visible-lg') {
-            fill_in 'user_search', with: 'ool'
+            fill_in 'user_filter_string', with: 'ool'
             click_button 'Apply'
           }
         end
@@ -361,8 +361,8 @@ describe "User pages" do
         # These must all be tested directly because the UI utilizes JS
         context "for all departments" do
           before do
-            post directory_path, user_view: 'all',
-                 user_search: 'bobunusual'
+            post directory_path, user_filter_type: 'all',
+                 user_filter_string: 'bobunusual'
           end
 
           it "displays the bob in accounting record" do
@@ -376,9 +376,9 @@ describe "User pages" do
 
         context "for just one department with a match" do
           before do
-            post directory_path, user_view: 'dep',
-                 view_department_id: @finance_department.id,
-                 user_search: 'bobunusual'
+            post directory_path, user_filter_type: 'dep',
+                 user_filter_department: @finance_department.id,
+                 user_filter_string: 'bobunusual'
           end
 
           it "displays the bob in finance record" do
@@ -392,9 +392,9 @@ describe "User pages" do
 
         context "for a department without a match" do
           before do
-            post directory_path, user_view: 'dep',
-                 view_department_id: @other_department.id,
-                 user_search: 'bobunusual'
+            post directory_path, user_filter_type: 'dep',
+                 user_filter_department: @other_department.id,
+                 user_filter_string: 'bobunusual'
           end
 
           it "does not display the bob in finance record" do
