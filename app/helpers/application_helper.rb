@@ -14,7 +14,6 @@ module ApplicationHelper
         return 'active' if ((controller_name == 'departments' ||
                              controller_name == 'users') &&
                           action_name == 'index')
-
       when :login
         if controller_name == 'sessions' &&
            (action_name == 'new' || action_name == 'create')

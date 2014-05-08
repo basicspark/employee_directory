@@ -1,0 +1,13 @@
+<!-- Side Panel -->
+<div class="panel panel-default <%= filter_panel_class_for(collapsed) %>">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <%= filter_panel_title_for("View Options", collapsed) %>
+    </h3>
+  </div>
+  <%= filter_panel_body_for(collapsed) do %>
+    <div class="panel-body">
+      <%= render 'filter_form', filter_path: filter_path %>
+    </div> <!-- panel body -->
+  <% end %>
+</div> <!-- side panel -->

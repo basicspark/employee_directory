@@ -1,0 +1,20 @@
+<% if form_target.errors.any? %>
+  <!-- ERROR PANEL -->
+  <div class="row">
+    <div class="col-xs-12 column">
+      <div class="panel panel-danger">
+        <div class="panel-heading">
+          <h3 class="panel-title">Please correct the following:</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <% form_target.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>  <!-- row error panel -->
+<% end %>
+

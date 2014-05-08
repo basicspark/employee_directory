@@ -1,0 +1,85 @@
+<!-- ********************* MAIN CONTENT ********************* -->
+<div class="row clearfix">
+
+  <div class="col-md-8 column">
+    <%= render partial: 'shared/form_errors', locals: { form_target: @user } %>
+
+    <!--USER FORM-->
+    <div class="well">
+      <%= bootstrap_form_for(@user, layout: :horizontal,
+                             label_col: 'col-lg-2', control_col: 'col-lg-10') do |f| %>
+
+        <legend><%= user_form_legend %></legend>
+
+        <!--First Name-->
+        <%= f.text_field :first_name, placeholder: 'First Name',
+                         label: 'First Name', class: 'set-focus',
+                         disabled: non_admin_disable %>
+
+        <!--Last Name-->
+        <%= f.text_field :last_name, placeholder: 'Last Name',
+                         label: 'Last Name', disabled: non_admin_disable %>
+
+        <!--Department-->
+        <% if current_user.admin? %>
+          <%= f.collection_select :department_id, Department.all,
+                                  :id, :name, prompt: true %>
+        <% else %>
+          <%= f.text_field :department_id, value: @user.department.name, disabled: true %>
+        <% end %>
+
+        <!--Phone Number-->
+        <%= f.phone_field :phone, class: 'mask-phone', placeholder: 'xxx-xxx-xxxx',
+                          label: 'Phone Number' %>
+
+        <!--Email-->
+        <%= f.email_field :email, placeholder: 'Email' %>
+
+        <!--Password-->
+        <%= f.password_field :password, placeholder: 'Password' %>
+
+        <!--Password Confirmation-->
+        <%= f.password_field :password_confirmation, placeholder: 'Confirm Password',
+                             label: 'Confirm Password' %>
+
+        <!--Mailing Address-->
+        <%= f.text_area :address, rows: 5, placeholder: 'Mailing Address' %>
+
+        <!--Start Date-->
+        <%= f.date_field :start_date, label: 'Start Date', disabled: non_admin_disable %>
+
+        <!--Birthday-->
+        <% if current_user.admin? %>
+          <%= f.date_field :birthday %>
+        <% else %>
+          <%= f.text_field :birthday, value: @user.birthday.strftime("%-m/%-d"),
+                           disabled: non_admin_disable %>
+        <% end %>
+
+        <% if current_user.admin? %>
+          <!--Application Administrator-->
+          <%= f.form_group :admin, label: { text: "Administrator?" } do %>
+            <%= f.radio_button :admin, 0, label: "No", checked: !@user.admin? %>
+            <%= f.radio_button :admin, 1, label: "Yes", checked: @user.admin? %>
+          <% end %>
+        <% end %>
+
+        <%= f.form_group do %>
+          <%= f.submit class: 'btn btn-success' %>
+        <% end %>
+      <% end %>
+
+    </div> <!-- well -->
+
+  </div> <!-- col user form -->
+  <% unless action_name == 'new' || action_name == 'create' %>
+    <!-- SIDE PANEL -->
+    <div class="col-md-4 column">
+      <%= render 'gravatar_panel' %>
+    </div> <!-- col side panel -->
+  <% end %>
+
+</div>  <!-- row main content ************************************** -->
+
+<%= link_to 'Go Back  ', users_path %>
+

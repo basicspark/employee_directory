@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  include ActionRestrictions
   before_action :logged_in_user, except: [:directory, :show]
   before_action :admin_user, except: [:directory, :edit, :update, :show]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
@@ -20,35 +21,32 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+    render :form
   end
 
   # GET /users/1/edit
   def edit
+    render :form
   end
 
   # POST /users
   def create
     @user = User.new(user_params)
-
-    respond_to do |format|
-      if @user.save
-        flash[:success] = 'User was successfully created.'
-        format.html { redirect_to @user }
-      else
-        format.html { render :new }
-      end
+    if @user.save
+      flash[:success] = 'User was successfully created.'
+      redirect_to @user
+    else
+      render :form
     end
   end
 
   # PATCH/PUT /users/1
   def update
-    respond_to do |format|
-      if @user.update(user_params)
-        flash[:success] = 'User was successfully updated.'
-        format.html { redirect_to @user }
-      else
-        format.html { render :edit }
-      end
+    if @user.update(user_params)
+      flash[:success] = 'User was successfully updated.'
+      redirect_to @user
+    else
+      render :form
     end
   end
 
@@ -56,13 +54,14 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     respond_to do |format|
-      format.js
+      format.js { render template: 'shared/remove_row',
+                         locals: { target_object: @user } }
       format.html { redirect_to users_url }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_user
       @user = User.find(params[:id])
     end
@@ -81,24 +80,29 @@ class UsersController < ApplicationController
       end
     end
 
-    # Require a login for some actions
-    def logged_in_user
-      redirect_to login_url, notice: 'Please log in.' unless logged_in?
-    end
-
-    # Require an admin user for some actions
-    def admin_user
-      redirect_to root_url unless current_user.admin?
-    end
-
     def get_users
-      if params[:user_view] == 'dep'
-        @users = find_by_name_and_department(params[:user_search],
-                    params[:view_department_id]).paginate(page: params[:page])
-      else
-        @users = find_by_name_and_department(params[:user_search],
-                                            nil).paginate(page: params[:page])
+      name_to_find = params[:user_filter_string]
+      dept_to_find = params[:user_filter_type] == 'dep' ? params[:user_filter_department] : nil
+      @users = find_users_by_page(name_to_find, dept_to_find, params[:page])
+    end
+
+    def find_users_by_page(name, department, page)
+      found_users = case
+        when name && department
+          # Search by both name and department
+          User.with_name(name).in_department(department)
+        when name && !department
+          # Only search by name
+          User.with_name(name)
+        when !name && department
+          # Only search by department
+          User.in_department(department)
+        else
+          # No search criteria so return all
+          User.all
       end
+      # Return paginated result
+      found_users.paginate(page: page)
     end
 
     def edit_self_only
@@ -107,28 +111,6 @@ class UsersController < ApplicationController
         if current_user != User.find(params[:id])
           # Trying to edit someone else, so redirect to their own record
           redirect_to edit_user_url(current_user)
-        end
-      end
-    end
-
-    def find_by_name_and_department(name, department_id)
-      # Return users based on passed in name or department_id
-      if name
-        # Name is passed in
-        if department_id
-          # Search by both name and department
-          User.with_name(name).in_department(department_id)
-        else
-          # Only search by name
-          User.with_name(name)
-        end
-      else
-        if department_id
-          # Only search by department
-          User.in_department(department_id)
-        else
-          # Nothing passed in so return it all
-          User.all
         end
       end
     end
